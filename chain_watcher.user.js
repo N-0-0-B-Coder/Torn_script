@@ -1,5 +1,7 @@
 // ==UserScript==
 // @name         Chain Watcher
+// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/edit/main/chain_watcher.user.js
+// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/edit/main/chain_watcher.user.js
 // @description  Glows colors to remember you to keep the chain alive
 // @author       Steejo [3014487]
 // @version      1.0
