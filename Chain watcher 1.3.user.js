@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Chain watcher 1.2
+// @name         Chain watcher 1.3
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.3
 // @description  Watch the chain
 // @author       Jox [1714547]
 // @author       DaoChauNghia[3029549]
