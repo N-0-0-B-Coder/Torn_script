@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.3
 // @description  Watch the chain and easy target finding
-// @author       DaoChauNghia[3029549]
+// @author       DaoChauNghia[3029549] - modified on Chain Watcher by Jox [1714547] - only for personal using
 // @author       Jox [1714547]
 // @match        https://www.torn.com/factions.php*
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js
