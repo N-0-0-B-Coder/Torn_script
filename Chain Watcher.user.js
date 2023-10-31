@@ -180,6 +180,16 @@
     `);
     }
 
+    function quickatkadvancesearch() {
+        $(document).ready(function() {
+            if (window.location.href.indexOf("https://www.torn.com/page.php?sid=UserList&levelFrom=1&levelTo=14&searchConditionNot=true&searchConditions=inHospital&lastAction=7") > -1) {
+              //do something
+              alert('OK');
+            }
+        });
+    
+    }
+
     function watchForChainTimer() {
         let target = document.getElementById('factions');
         let observer = new MutationObserver(function(mutations) {
