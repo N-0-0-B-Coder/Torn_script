@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chain Watcher
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.3.1
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
 // @description  Watch the chain and easy target finding
