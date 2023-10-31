@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name         Advance Search-Quick Attack
 // @namespace    http://tampermonkey.net/
-// @version      0.9
+// @version      0.9.1
+// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
+// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
 // @description  Add button for quickly attack chosen target after advance search
 // @author       You
 // @match        https://www.torn.com/page.php*
