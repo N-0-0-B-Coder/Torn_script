@@ -90,7 +90,6 @@
             let attack = `https://www.torn.com/loader.php?sid=attack&user2ID=${ID}`
             window.open(attack, '_blank');
         });
-
     }
 
 
