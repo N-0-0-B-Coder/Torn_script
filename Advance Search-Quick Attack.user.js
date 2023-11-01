@@ -39,7 +39,7 @@
                 insertatkbtn(this, addAtkLabels);
             });
     }*/
-    const observer = new MutationObserver(function(mutations) {
+    const AdSearchobserver = new MutationObserver(function(mutations) {
         let havebtn = false;
         let mutation = mutations[0].target;
         if (mutation.classList.contains("user-info-list-wrap") || mutation.classList.contains("userlist-wrapper")) {
@@ -71,7 +71,7 @@
             });
         }
     });
-    observer.observe(observerTarget, observerConfig);
+    AdSearchobserver.observe(observerTarget, observerConfig);
 
     function insertatkbtn(element, buttonLabels, ID){
         const outerspanatk = document.createElement('span');
