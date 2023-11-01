@@ -609,18 +609,10 @@
          });
         let mutationObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
-            //if (bodyhtml.getAttribute('data-dark-mode-logo') == 'regular'){
             changestylecolor();
             });
         });
         mutationObserver.observe(bodyhtml, {attributes:true});
-            //if (bodyhtml.getAttribute('data-dark-mode-logo') == 'regular'){
-            //changestylecolor();
-            //}
-
-        //btnEasyTargetFind.style.color = 'white';
-        //btnEasyTargetFind.style.backgroundColor = 'linear-gradient(180deg, #555555 0%, #333333 100%)';
-        //btnEasyTargetFind.style.backgroundColor = controls.color;
         btnEasyTargetFind.onclick = function(e){
             //let randID = getRandomNumber(minID,maxID);
             let randuserlist = getRandomNumber(minlist,maxlist);
