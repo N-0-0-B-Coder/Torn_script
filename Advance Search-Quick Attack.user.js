@@ -54,7 +54,8 @@
                 //let isParentRowDisabled = this.parentElement.parentElement.classList.contains("disabled");
                 let alreadyHasAtkBtn = this.querySelector(".btn-wrap.advance-search-attack") != null;
                 if (!alreadyHasAtkBtn){
-
+                    let zul = this.querySelector("ul.big svg");
+                    zul.style.zIndex = "1";
                     insertatkbtn(this, addAtkLabels);
                 }
             });
