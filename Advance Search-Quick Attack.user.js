@@ -47,13 +47,13 @@
                 let user = this.parentElement.parentElement.className;
                 let userID = user.replace("user", "");
                 if (this.classList.contains("span.btn-wrap.advance-search-attack")){
-                }
-                else{
                     insertatkbtn(this, addAtkLabels,userID);
                     let zspan = this.querySelector("span.icons-wrap.icons");
                     zspan.style.display = 'inline';
                     let zul = this.querySelector("ul#iconTray.big.svg");
                     zul.style.display = 'inline';
+                }
+                else{
                 }
                 //let isParentRowDisabled = this.parentElement.parentElement.classList.contains("disabled");
                 //insertatkbtn(this, addAtkLabels);
