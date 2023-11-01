@@ -60,6 +60,9 @@
                 if (havebtn){
                     AdSearchobserver.disconnect();
                 }
+                else{
+                    AdSearchobserver.observe(observerTarget, observerConfig);
+                }
                 //let isParentRowDisabled = this.parentElement.parentElement.classList.contains("disabled");
                 //insertatkbtn(this, addAtkLabels);
                 /*let alreadyHasAtkBtn = this.querySelector(".btn-wrap.advance-search-attack") != null;
@@ -70,6 +73,9 @@
                 }*/
             });
         }
+    });
+    $(document).ready(function() {
+        AdSearchobserver.observe(observerTarget, observerConfig);
     });
     AdSearchobserver.observe(observerTarget, observerConfig);
 
