@@ -617,7 +617,7 @@
             //let randID = getRandomNumber(minID,maxID);
             let randuserlist = getRandomNumber(minlist,maxlist);
             //let profileLink = `https://www.torn.com/profiles.php?XID=${randID}`;
-            let advancesearch = `https://www.torn.com/page.php?sid=UserList&levelFrom=1&levelTo=14&searchConditionNot=true&searchConditions=inHospital&lastAction=7#start=${randuserlist}`
+            let advancesearch = `https://www.torn.com/page.php?sid=UserList&levelFrom=1&levelTo=14&searchConditionNot=true&searchConditions=inHospital&lastAction=7#start=${randuserlist}`;
             // Comment this line and uncomment the one below it if you want the profile to open in a new tab
             //window.location.href = advancesearch;
             window.open(advancesearch, '_blank');
