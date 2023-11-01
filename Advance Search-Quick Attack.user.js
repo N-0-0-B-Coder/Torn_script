@@ -30,8 +30,7 @@
 //    margin-left: auto;
     const addAtkLabels = ["Attack"];
     const observerTarget = $(".content-wrapper")[0];
-    const observerConfig = { attributes: false, childList: true, characterData: false, subtree: true };
-    let userwrap = document.getElementById('userlist-wrapper');
+    const observerConfig = { attributes: true, attributeFilter: ['i-data'], childList: true, characterData: false, subtree: true };
     /*$(document).ready(function() {
         if (observerTarget.classList.contains('user-info-list-wrap')  || observerTarget.classList.contains("userlist-wrapper")){
         let containerID = $("ul.user-info-list-wrap > li");
@@ -39,12 +38,13 @@
                 insertatkbtn(this, addAtkLabels);
             });
     }*/
+
     const AdSearchobserver = new MutationObserver(function(mutations) {
         let havebtn = false;
         let mutation = mutations[0].target;
         if (mutation.classList.contains("user-info-list-wrap") || mutation.classList.contains("userlist-wrapper")) {
-            let containerID = $("ul.user-info-list-wrap > li");
-            containerID.find("div.level-icons-wrap span.user-icons").each(function(){
+            let containerID1 = $("ul.user-info-list-wrap > li");
+            containerID1.find("div.level-icons-wrap span.user-icons").each(function(){
                 let user = this.parentElement.parentElement.className;
                 let userID = user.replace("user", "");
                 if (this.classList.contains("span.btn-wrap.advance-search-attack")){
@@ -58,10 +58,8 @@
                     havebtn = true;
                 }
                 if (havebtn){
+                    havebtn = false;
                     AdSearchobserver.disconnect();
-                }
-                else{
-                    AdSearchobserver.observe(observerTarget, observerConfig);
                 }
                 //let isParentRowDisabled = this.parentElement.parentElement.classList.contains("disabled");
                 //insertatkbtn(this, addAtkLabels);
@@ -74,10 +72,23 @@
             });
         }
     });
-    $(document).ready(function() {
-        AdSearchobserver.observe(observerTarget, observerConfig);
-    });
+
+
     AdSearchobserver.observe(observerTarget, observerConfig);
+
+    const pageobserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+        if (mutation.classList.contains("gallery-wrapper") || mutation.classList.contains("pagination-wrap")) {
+            let containerID2 = $("div.gallery-wrapper > a");
+            //containerID2.find("a.page-number.active.page-show").each(function(){
+            containerID2.each(function(){
+                AdSearchobserver.observe(observerTarget, observerConfig);
+            });
+        }
+        });
+    });
+
+    pageobserver.observe(observerTarget, observerConfig);
 
     function insertatkbtn(element, buttonLabels, ID){
         const outerspanatk = document.createElement('span');
