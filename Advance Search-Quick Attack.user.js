@@ -39,7 +39,8 @@
                 insertatkbtn(this, addAtkLabels);
             });
     }*/
-    const observer = new MutationObserver(function(mutations) {
+    let AdSearchobserver = new MutationObserver(function(mutations) {
+        let havebtn = false;
         let mutation = mutations[0].target;
         if (mutation.classList.contains("user-info-list-wrap") || mutation.classList.contains("userlist-wrapper")) {
             let containerID = $("ul.user-info-list-wrap > li");
@@ -47,13 +48,20 @@
                 let user = this.parentElement.parentElement.className;
                 let userID = user.replace("user", "");
                 if (this.classList.contains("span.btn-wrap.advance-search-attack")){
+                }
+                else{
                     insertatkbtn(this, addAtkLabels,userID);
                     let zspan = this.querySelector("span.icons-wrap.icons");
                     zspan.style.display = 'inline';
                     let zul = this.querySelector("ul#iconTray.big.svg");
                     zul.style.display = 'inline';
+                    havebtn = true;
+                }
+                if (havebtn){
+                    AdSearchobserver.disconnect();
                 }
                 else{
+                    AdSearchobserver.observe(observerTarget, observerConfig);
                 }
                 //let isParentRowDisabled = this.parentElement.parentElement.classList.contains("disabled");
                 //insertatkbtn(this, addAtkLabels);
@@ -66,7 +74,10 @@
             });
         }
     });
-    observer.observe(observerTarget, observerConfig);
+    $(document).ready(function() {
+        AdSearchobserver.observe(observerTarget, observerConfig);
+    });
+    AdSearchobserver.observe(observerTarget, observerConfig);
 
     function insertatkbtn(element, buttonLabels, ID){
         const outerspanatk = document.createElement('span');
@@ -90,7 +101,6 @@
             let attack = `https://www.torn.com/loader.php?sid=attack&user2ID=${ID}`
             window.open(attack, '_blank');
         });
-
     }
 
 
