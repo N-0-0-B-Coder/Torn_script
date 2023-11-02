@@ -4,7 +4,7 @@
 // @version      0.9.5
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
-// @description  Add button for quickly attack chosen target after advance search
+// @description  Filter unattackable target and quick attack button after advance search
 // @author       DaoChauNghia[3029549]
 // @match        https://www.torn.com/page.php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
