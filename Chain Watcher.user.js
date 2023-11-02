@@ -195,75 +195,7 @@
     }
 
     function quickatkadvancesearch() {
-        const addAtkLabels = ["Attack"];
-        const AdSearchTarget = $(".content-wrapper")[0];
-        const observerConfig = { attributes: false, childList: true, characterData: false, subtree: true };
-        let userwrap = document.getElementById('userlist-wrapper');
-        /*$(document).ready(function() {
-            if (observerTarget.classList.contains('user-info-list-wrap')  || observerTarget.classList.contains("userlist-wrapper")){
-            let containerID = $("ul.user-info-list-wrap > li");
-                containerID.find("div.level-icons-wrap span.user-icons").each(function(){
-                    insertatkbtn(this, addAtkLabels);
-                });
-        }*/
-        const AdSearchobserver = new MutationObserver(function(mutations) {
-            let havebtn = false;
-            let mutation = mutations[0].target;
-            if (mutation.classList.contains("user-info-list-wrap") || mutation.classList.contains("userlist-wrapper")) {
-                let containerID = $("ul.user-info-list-wrap > li");
-                containerID.find("div.level-icons-wrap span.user-icons").each(function(){
-                    let user = this.parentElement.parentElement.className;
-                    let userID = user.replace("user", "");
-                    if (this.classList.contains("span.btn-wrap.advance-search-attack")){
-                    }
-                    else{
-                        insertatkbtn(this, addAtkLabels,userID);
-                        let zspan = this.querySelector("span.icons-wrap.icons");
-                        zspan.style.display = 'inline';
-                        let zul = this.querySelector("ul#iconTray.big.svg");
-                        zul.style.display = 'inline';
-                        havebtn = true;
-                    }
-                    if (havebtn){
-                        AdSearchobserver.disconnect();
-                    }
-                    //let isParentRowDisabled = this.parentElement.parentElement.classList.contains("disabled");
-                    //insertatkbtn(this, addAtkLabels);
-                    /*let alreadyHasAtkBtn = this.querySelector(".btn-wrap.advance-search-attack") != null;
-                    if (!alreadyHasAtkBtn){
-                        insertatkbtn(this, addAtkLabels);
-                        let zul = this.querySelector("ul#iconTray.big.svg");
-                        zul.style.zIndex = 1;
-                    }*/
-                });
-            }
-        });
-        AdSearchobserver.observe(AdSearchTarget, observerConfig);
-    
-        function insertatkbtn(element, buttonLabels, ID){
-            const outerspanatk = document.createElement('span');
-            outerspanatk.className = 'btn-wrap.advance-search-attack';
-    
-            const innerspanatk = document.createElement('span');
-            innerspanatk.className = 'btn';
-    
-            const inputElementAtk = document.createElement('input');
-            inputElementAtk.type = 'button';
-            inputElementAtk.value = buttonLabels[0];
-            inputElementAtk.className = 'torn-btn';
-    
-            innerspanatk.appendChild(inputElementAtk);
-            outerspanatk.appendChild(innerspanatk);
-    
-            element.append(outerspanatk);
-    
-            $(outerspanatk).on("click", "input", function(event) {
-                //this.parentNode.style.display = "none";
-                let attack = `https://www.torn.com/loader.php?sid=attack&user2ID=${ID}`
-                window.open(attack, '_blank');
-            });
-        }
-    
+    //
     }
 
     function watchForChainTimer() {
