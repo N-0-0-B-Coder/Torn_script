@@ -22,6 +22,7 @@
     GM_addStyle(`
 .btn-wrap.advance-search-attack {
     float: right;
+    margin-left: auto;
     z-index: 99999;
 }
 `);
@@ -37,8 +38,9 @@
                 containerID.each(function() {
                     let user = this.className;
                     let userID = user.replace("user", "");
-                    if (!this.querySelector(".advance-search-attack")) {
-                        insertatkbtn(this, addAtkLabels, userID);
+                    let userIcons = $(this).find("div.level-icons-wrap > span.user-icons");
+                    if (userIcons.length > 0 && !userIcons[0].querySelector(".advance-search-attack")) {
+                        insertatkbtn(userIcons[0], addAtkLabels, userID);
                     }
                     let status = this.querySelectorAll('ul#iconTray > li');
                     for(let s of status){
