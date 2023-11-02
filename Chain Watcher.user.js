@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Chain Watcher
 // @namespace    http://tampermonkey.net/
-// @version      1.3.1
+// @version      1.4.0
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
-// @description  Watch the chain and easy target finding
+// @description  Watch the chain and advance target finding with filter and quick attack
 // @author       DaoChauNghia[3029549] - modified on Chain Watcher by Jox [1714547] - only for personal using
 // @author       Jox [1714547]
 // @match        https://www.torn.com/factions.php*
@@ -12,17 +12,16 @@
 // @grant        GM_addStyle
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
     let GM_addStyle = function (s) {
         let style = document.createElement("style");
-        style.type = "text/css";
         style.innerHTML = s;
         document.head.appendChild(style);
     };
     GM_addStyle(`
 .btn-wrap.advance-search-attack {
-	float: right;
+	float: auto;
     margin-left: auto;
     z-index: 99999;
 }
@@ -39,7 +38,7 @@
         return Math.floor(Math.random() * (max - min + 1)) + min; // The maximum is inclusive and the minimum is inclusive
     }
 
-        GM_addStyle(`.jox-member-your {text-decoration: line-through !important; cursor: not-allowed !important;}
+    GM_addStyle(`.jox-member-your {text-decoration: line-through !important; cursor: not-allowed !important;}
                 .jox-faction-your {margin-left: 0px !important}
                 .jox-faction-your:after {content: " ⛔"; text-decoration: none;}
                 .jox-member-enemy {color:red !important; animation: ring2 4s .7s ease-in-out infinite; display:inline-block;}
@@ -100,69 +99,70 @@
 
     start();
 
-    function start(){
+    function start() {
         loadData();
         watchForChainTimer();
         setInterval(markWallMembers, 500);
+        quickatkadvancesearch();
     }
 
-    function markWallMembers(){
-        if(controls.markWallTargets){
+    function markWallMembers() {
+        if (controls.markWallTargets) {
             addCustomCss();
         }
-        else{
+        else {
             removeCustomCss();
         }
     }
 
-    function addCustomCss(){
+    function addCustomCss() {
         var memersYour = document.querySelectorAll('.descriptions .faction-war .members-cont .members-list .row-animation.your .member .user.name');
         var factionsYour = document.querySelectorAll('.descriptions .faction-war .members-cont .members-list .row-animation.your .member .user.faction');
         var memersEnemy = document.querySelectorAll('.descriptions .faction-war .members-cont .members-list .row-animation.enemy .member .user.name');
         var attacksEnemy = document.querySelectorAll('.descriptions .faction-war .members-cont .members-list .row-animation.enemy .attack a');
 
-        memersYour.forEach(function(element) {
-           element.classList.add('jox-member-your');
+        memersYour.forEach(function (element) {
+            element.classList.add('jox-member-your');
         });
-/*
-        factionsYour.forEach(function(element) {
-           element.classList.add('jox-faction-your');
-        });
-*/
-        memersEnemy.forEach(function(element) {
-           element.classList.add('jox-member-enemy');
+        /*
+                factionsYour.forEach(function(element) {
+                   element.classList.add('jox-faction-your');
+                });
+        */
+        memersEnemy.forEach(function (element) {
+            element.classList.add('jox-member-enemy');
         });
 
-        attacksEnemy.forEach(function(element) {
-           element.classList.add('jox-attack-enemy');
+        attacksEnemy.forEach(function (element) {
+            element.classList.add('jox-attack-enemy');
         });
     }
 
-    function removeCustomCss(){
+    function removeCustomCss() {
         var memersYour = document.querySelectorAll('.descriptions .faction-war .members-cont .members-list .row-animation.your .member .user.name');
         var factionsYour = document.querySelectorAll('.descriptions .faction-war .members-cont .members-list .row-animation.your .member .user.faction');
         var memersEnemy = document.querySelectorAll('.descriptions .faction-war .members-cont .members-list .row-animation.enemy .member .user.name');
         var attacksEnemy = document.querySelectorAll('.descriptions .faction-war .members-cont .members-list .row-animation.enemy .attack a');
 
-        memersYour.forEach(function(element) {
-           element.classList.remove('jox-member-your');
+        memersYour.forEach(function (element) {
+            element.classList.remove('jox-member-your');
         });
 
-        factionsYour.forEach(function(element) {
-           element.classList.remove('jox-faction-your');
+        factionsYour.forEach(function (element) {
+            element.classList.remove('jox-faction-your');
         });
 
-        memersEnemy.forEach(function(element) {
-           element.classList.remove('jox-member-enemy');
+        memersEnemy.forEach(function (element) {
+            element.classList.remove('jox-member-enemy');
         });
 
-        attacksEnemy.forEach(function(element) {
-           element.classList.remove('jox-attack-enemy');
+        attacksEnemy.forEach(function (element) {
+            element.classList.remove('jox-attack-enemy');
         });
     }
 
-    function addCustomCss2(){
-     GM_addStyle(`.descriptions .faction-war .members-cont .members-list .row-animation.your .member .user.name {text-decoration: line-through;}
+    function addCustomCss2() {
+        GM_addStyle(`.descriptions .faction-war .members-cont .members-list .row-animation.your .member .user.name {text-decoration: line-through;}
                 .descriptions .faction-war .members-cont .members-list .row-animation.your .member .user.faction:after {content: " ⛔ "; text-decoration: none;}
                 .descriptions .faction-war .members-cont .members-list .row-animation.enemy .member .user.name {color:red;}
                 .descriptions .faction-war .members-cont .members-list .row-animation.enemy .attack a {animation: ring 4s .7s ease-in-out infinite; display:inline-block;}
@@ -195,14 +195,69 @@
     }
 
     function quickatkadvancesearch() {
-    //
+        //
+        const addAtkLabels = ["Attack"];
+        const observerTarget = $(".content-wrapper")[0];
+        const observerConfig = { attributes: false, childList: true, characterData: false, subtree: true };
+        const unavailable = ['Traveling', 'Hospital', 'Federal', 'Jail'];
+
+        let AdSearchobserver = new MutationObserver(function (mutations) {
+            mutations.forEach((mutation) => {
+                if (mutation.target.classList.contains("user-info-list-wrap") || mutation.target.classList.contains("userlist-wrapper")) {
+                    let containerID = $("ul.user-info-list-wrap > li");
+                    containerID.each(function () {
+                        let user = this.className;
+                        let userID = user.replace("user", "");
+                        let userIcons = $(this).find("div.level-icons-wrap > span.user-icons");
+                        if (userIcons.length > 0 && !userIcons[0].querySelector(".advance-search-attack")) {
+                            insertatkbtn(userIcons[0], addAtkLabels, userID);
+                        }
+                        let iconWrap = this.querySelector('span.icons-wrap');
+                        iconWrap.style.display = 'inline';
+                        let iconTray = this.querySelector('span.icons-wrap > ul#iconTray');
+                        iconTray.style.display = 'inline';
+                        let status = this.querySelectorAll('ul#iconTray > li');
+                        for (let s of status) {
+                            if (unavailable.some(u => s.title.includes(u))) {
+                                this.style.display = 'none';
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        AdSearchobserver.observe(observerTarget, observerConfig);
+
+        function insertatkbtn(element, buttonLabels, ID) {
+            const outerspanatk = document.createElement('span');
+            outerspanatk.className = 'btn-wrap advance-search-attack';
+
+            const innerspanatk = document.createElement('span');
+            innerspanatk.className = 'btn';
+
+            const inputElementAtk = document.createElement('input');
+            inputElementAtk.type = 'button';
+            inputElementAtk.value = buttonLabels[0];
+            inputElementAtk.className = 'torn-btn';
+
+            innerspanatk.appendChild(inputElementAtk);
+            outerspanatk.appendChild(innerspanatk);
+
+            element.append(outerspanatk);
+
+            $(outerspanatk).on("click", "input", function () {
+                let attack = `https://www.torn.com/loader.php?sid=attack&user2ID=${ID}`
+                window.open(attack, '_blank');
+            });
+        }
     }
 
     function watchForChainTimer() {
         let target = document.getElementById('factions');
-        let observer = new MutationObserver(function(mutations) {
+        let observer = new MutationObserver(function (mutations) {
             let doApply = false;
-            mutations.forEach(function(mutation) {
+            mutations.forEach(function (mutation) {
                 for (let i = 0; i < mutation.addedNodes.length; i++) {
                     //console.log(mutation.addedNodes.item(i));
                     if (document.querySelector('.chain-box-timeleft')) {
@@ -210,7 +265,7 @@
                         //console.log('Have List of players');
                         break;
                     }
-                    else{
+                    else {
                         //console.log('Not a List of players');
                     }
                 }
@@ -229,23 +284,23 @@
         observer.observe(target, config);
     }
 
-    function applyTracker(){
+    function applyTracker() {
         //var timer = document.querySelector('.chain-box-timeleft');
-        if(!started){
+        if (!started) {
             started = true;
             showForm();
             alertMe();
         }
     }
 
-    function alertMe(){
+    function alertMe() {
 
         var chainInfo = document.querySelector('.chain-box-title');
         var timer = document.querySelector('.chain-box-timeleft');
         var data = timer.innerHTML.split(':');
         var blinkTarget = document.querySelector('.content');
 
-        if((chainInfo.innerHTML == 'Chain active' && controls.watchChain) || controls.test){
+        if ((chainInfo.innerHTML == 'Chain active' && controls.watchChain) || controls.test) {
 
             timer.style.backgroundColor = 'lime';
             timer.style.color = 'red';
@@ -253,25 +308,25 @@
             var currentTime = Number(data[0]) * 60 + Number(data[1]);
             var alertTIme = controls.minuteAlert * 60 + controls.secundeAlert;
 
-            if((currentTime < alertTIme && currentTime > 0) || controls.test){
+            if ((currentTime < alertTIme && currentTime > 0) || controls.test) {
                 blinkTarget.classList.toggle('chainWatcherPing');
 
-                if(blinkTarget.classList.contains('chainWatcherPing')){
+                if (blinkTarget.classList.contains('chainWatcherPing')) {
                     blinkTarget.style.backgroundColor = controls.colorAlert;
-                    if(controls.beepAlert){
-                        beep(controls.beepLength, controls.beepType, controls.beepVolume, function(){});
+                    if (controls.beepAlert) {
+                        beep(controls.beepLength, controls.beepType, controls.beepVolume, function () { });
                     }
                 }
-                else{
+                else {
                     blinkTarget.style.backgroundColor = null;
                 }
             }
-            else{
+            else {
                 blinkTarget.classList.remove('chainWatcherPing');
                 blinkTarget.style.backgroundColor = null;
             }
         }
-        else{
+        else {
             timer.style.backgroundColor = null;
             timer.style.color = null;
             blinkTarget.classList.remove('chainWatcherPing');
@@ -282,10 +337,10 @@
     }
 
     var beep = (function () {
-        if(ctx && ctx.state && ctx.state !== "running"){
+        if (ctx && ctx.state && ctx.state !== "running") {
             ctx.resume();
         }
-        else{
+        else {
             ctx = new AudioContext();
         }
         return function (duration, type, volume, finishedCallback) {
@@ -298,7 +353,7 @@
             var types = ['sine', 'square', 'sawtooth', 'triangle'];
 
             if (typeof finishedCallback != "function") {
-                finishedCallback = function () {};
+                finishedCallback = function () { };
             }
 
             var osc = ctx.createOscillator();
@@ -322,7 +377,7 @@
 
     /*****************************************************************************/
 
-    function showForm(){
+    function showForm() {
         //Create container div for widget
         var container = document.createElement('div');
         container.id = 'JoxDiv';
@@ -332,13 +387,13 @@
         header.classList.add('title-black', 'm-top10', 'title-toggle', 'active', 'top-round', 'chain-watcher-header');
         header.innerHTML = 'Chain Watcher'
         header.style.color = 'lime';
-        header.onclick = function(e){
+        header.onclick = function (e) {
             var body = document.querySelector('.chain-watcher-body');
             controls.watcherMinimized = !controls.watcherMinimized;
-            if(controls.watcherMinimized){
+            if (controls.watcherMinimized) {
                 body.style.display = 'none';
             }
-            else{
+            else {
                 body.style.display = 'flex';
             }
             saveData();
@@ -347,10 +402,10 @@
         //Create body
         var body = document.createElement('div');
         body.classList.add('cont-gray10', 'bottom-round', 'cont-toggle', 'unreset', 'chain-watcher-body');
-        if(controls.watcherMinimized){
+        if (controls.watcherMinimized) {
             body.style.display = 'none';
         }
-        else{
+        else {
             body.style.display = 'flex';
         }
         body.style.flexWrap = 'wrap';
@@ -363,17 +418,17 @@
         var cbWatchChain = document.createElement('input');
         var lblWatchChain = document.createElement('label');
         lblWatchChain.innerHTML = 'Watch Chain';
-        lblWatchChain.setAttribute('for','cbWatchChain');
+        lblWatchChain.setAttribute('for', 'cbWatchChain');
         cbWatchChain.type = 'checkbox';
         cbWatchChain.id = 'cbWatchChain';
         cbWatchChain.name = 'cbWatchChain';
         cbWatchChain.style.margin = '0 5px';
         cbWatchChain.checked = controls.watchChain;
-        cbWatchChain.onclick = function(e){
-            if(e.target.checked){
+        cbWatchChain.onclick = function (e) {
+            if (e.target.checked) {
                 controls.watchChain = true;
             }
-            else{
+            else {
                 controls.watchChain = false;
             }
 
@@ -390,21 +445,21 @@
         var txtAlertTime = document.createElement('input');
         var lblAlertTime = document.createElement('label');
         lblAlertTime.innerHTML = 'Alert time:';
-        lblAlertTime.setAttribute('for','txtAlertTime');
+        lblAlertTime.setAttribute('for', 'txtAlertTime');
         //lblAlertTime.style.margin = '0px 0px 0px 25px';
         txtAlertTime.type = 'text';
         txtAlertTime.id = 'txtAlertTime';
         txtAlertTime.name = 'txtAlertTime';
         txtAlertTime.style.margin = '0 5px';
         txtAlertTime.value = controls.minuteAlert + ':' + controls.secundeAlert;
-        txtAlertTime.onchange = function(e){
+        txtAlertTime.onchange = function (e) {
             var data = txtAlertTime.value.match(/^$|^([0-4]):([0-5][0-9])$/);
-            if(data && data.length && data.length == 3){
+            if (data && data.length && data.length == 3) {
                 controls.minuteAlert = Number(data[1]);
                 controls.secundeAlert = Number(data[2]);
                 saveData();
             }
-            else{
+            else {
                 alert('Set time is in wrong format, it must me in format m:ss in valuse between 0:00 and 4:59');
                 txtAlertTime.value = controls.minuteAlert + ':' + controls.secundeAlert;
             }
@@ -421,17 +476,17 @@
         var cbBeepAlert = document.createElement('input');
         var lblBeepAlert = document.createElement('label');
         lblBeepAlert.innerHTML = 'Beep Alert';
-        lblBeepAlert.setAttribute('for','cbBeepAlert');
+        lblBeepAlert.setAttribute('for', 'cbBeepAlert');
         cbBeepAlert.type = 'checkbox';
         cbBeepAlert.id = 'cbBeepAlert';
         cbBeepAlert.name = 'cbBeepAlert';
         //cbBeepAlert.style.margin = '0px 5px 0px 25px';
         cbBeepAlert.checked = controls.beepAlert;
-        cbBeepAlert.onclick = function(e){
-            if(e.target.checked){
+        cbBeepAlert.onclick = function (e) {
+            if (e.target.checked) {
                 controls.beepAlert = true;
             }
-            else{
+            else {
                 controls.beepAlert = false;
             }
             saveData();
@@ -447,7 +502,7 @@
         var sldBeepVolume = document.createElement('input');
         var lblBeepVolume = document.createElement('label');
         lblBeepVolume.innerHTML = 'Beep Volume';
-        lblBeepVolume.setAttribute('for','sldBeepVolume');
+        lblBeepVolume.setAttribute('for', 'sldBeepVolume');
         //lblBeepVolume.style.margin = '0px 5px 0px 25px';
         sldBeepVolume.type = 'range';
         sldBeepVolume.min = 1;
@@ -455,7 +510,7 @@
         sldBeepVolume.value = controls.beepVolume * 100;
         sldBeepVolume.id = 'sldBeepVolume';
         sldBeepVolume.name = 'sldBeepVolume';
-        sldBeepVolume.onchange = function(e){
+        sldBeepVolume.onchange = function (e) {
             controls.beepVolume = Number(sldBeepVolume.value) / 100;
             saveData();
         }
@@ -471,13 +526,13 @@
         var clrAlertColor = document.createElement('input');
         var lblAlertColor = document.createElement('label');
         lblAlertColor.innerHTML = 'Alert color';
-        lblAlertColor.setAttribute('for','clrAlertColor');
+        lblAlertColor.setAttribute('for', 'clrAlertColor');
         //lblAlertColor.style.margin = '0px 5px 0px 25px';
         clrAlertColor.type = 'color';
         clrAlertColor.value = controls.color;
         clrAlertColor.id = 'clrAlertColor';
         clrAlertColor.name = 'clrAlertColor';
-        clrAlertColor.onchange = function(e){
+        clrAlertColor.onchange = function (e) {
             controls.color = clrAlertColor.value;
             //btnEasyTargetFind.style.color = controls.color;
             saveData();
@@ -494,7 +549,7 @@
         var sldColorOpacity = document.createElement('input');
         var lblColorOpacity = document.createElement('label');
         lblColorOpacity.innerHTML = 'Color opacity';
-        lblColorOpacity.setAttribute('for','sldColorOpacity');
+        lblColorOpacity.setAttribute('for', 'sldColorOpacity');
         //lblColorOpacity.style.margin = '0px 5px 0px 25px';
         sldColorOpacity.type = 'range';
         sldColorOpacity.min = 1;
@@ -502,7 +557,7 @@
         sldColorOpacity.value = controls.opacity * 100;
         sldColorOpacity.id = 'sldColorOpacity';
         sldColorOpacity.name = 'sldColorOpacity';
-        sldColorOpacity.onchange = function(e){
+        sldColorOpacity.onchange = function (e) {
             controls.opacity = Number(sldColorOpacity.value) / 100;
             saveData();
         }
@@ -518,7 +573,7 @@
         var sldInterval = document.createElement('input');
         var lblInterval = document.createElement('label');
         lblInterval.innerHTML = 'Check/Alert Interval';
-        lblInterval.setAttribute('for','sldInterval');
+        lblInterval.setAttribute('for', 'sldInterval');
         //lblInterval.style.margin = '0px 5px 0px 25px';
         sldInterval.type = 'range';
         sldInterval.min = 500;
@@ -527,7 +582,7 @@
         sldInterval.value = controls.interval;
         sldInterval.id = 'sldInterval';
         sldInterval.name = 'sldInterval';
-        sldInterval.onchange = function(e){
+        sldInterval.onchange = function (e) {
             controls.interval = Number(sldInterval.value);
             saveData();
         }
@@ -543,17 +598,17 @@
         var cbTest = document.createElement('input');
         var lblTest = document.createElement('label');
         lblTest.innerHTML = 'Test';
-        lblTest.setAttribute('for','cbTest');
+        lblTest.setAttribute('for', 'cbTest');
         cbTest.type = 'checkbox';
         cbTest.id = 'cbTest';
         cbTest.name = 'cbTest';
         cbTest.style.margin = '0 5px';
         cbTest.checked = controls.test;
-        cbTest.onclick = function(e){
-            if(e.target.checked){
+        cbTest.onclick = function (e) {
+            if (e.target.checked) {
                 controls.test = true;
             }
-            else{
+            else {
                 controls.test = false;
             }
 
@@ -570,17 +625,17 @@
         var cbMartWallTargets = document.createElement('input');
         var lblMartWallTargets = document.createElement('label');
         lblMartWallTargets.innerHTML = 'Mark wall targets';
-        lblMartWallTargets.setAttribute('for','cbMartWallTargets');
+        lblMartWallTargets.setAttribute('for', 'cbMartWallTargets');
         cbMartWallTargets.type = 'checkbox';
         cbMartWallTargets.id = 'cbMartWallTargets';
         cbMartWallTargets.name = 'cbMartWallTargets';
         cbMartWallTargets.style.margin = '0 5px';
         cbMartWallTargets.checked = controls.markWallTargets;
-        cbMartWallTargets.onclick = function(e){
-            if(e.target.checked){
+        cbMartWallTargets.onclick = function (e) {
+            if (e.target.checked) {
                 controls.markWallTargets = true;
             }
-            else{
+            else {
                 controls.markWallTargets = false;
             }
 
@@ -597,35 +652,35 @@
         var btnEasyTargetFind = document.createElement('button');
         var lblEasyTargetFind = document.createElement('label');
         btnEasyTargetFind.innerHTML = 'Easy target finding';
-        lblEasyTargetFind.setAttribute('for','btnEasyTargetFind');
+        lblEasyTargetFind.setAttribute('for', 'btnEasyTargetFind');
         btnEasyTargetFind.type = 'button';
         btnEasyTargetFind.id = 'btnEasyTargetFind';
         btnEasyTargetFind.name = 'btnEasyTargetFind';
         btnEasyTargetFind.style.margin = '0 5px';
         btnEasyTargetFind.style.border = '1px solid #cdcdcd';
         let bodyhtml = document.getElementById('body');
-        function changestylecolor(){
-            if (bodyhtml.hasAttribute('data-dark-mode-logo')){
-              btnEasyTargetFind.style.color = 'white';
+        function changestylecolor() {
+            if (bodyhtml.hasAttribute('data-dark-mode-logo')) {
+                btnEasyTargetFind.style.color = 'white';
             }
             else {
-              btnEasyTargetFind.style.color = 'black';
+                btnEasyTargetFind.style.color = 'black';
             }
         }
-        $(document).ready(function() {
+        $(document).ready(function () {
             changestylecolor();
-         });
-        let mutationObserver = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-            changestylecolor();
+        });
+        let mutationObserver = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                changestylecolor();
             });
         });
-        mutationObserver.observe(bodyhtml, {attributes:true});
-        btnEasyTargetFind.onclick = function(e){
+        mutationObserver.observe(bodyhtml, { attributes: true });
+        btnEasyTargetFind.onclick = function (e) {
             //let randID = getRandomNumber(minID,maxID);
-            let randuserlist = getRandomNumber(minlist,maxlist);
+            let randuserlist = getRandomNumber(minlist, maxlist);
             //let profileLink = `https://www.torn.com/profiles.php?XID=${randID}`;
-            let advancesearch = `https://www.torn.com/page.php?sid=UserList&levelFrom=1&levelTo=14&searchConditionNot=true&searchConditions=inHospital&lastAction=7#start=${randuserlist}`;
+            let advancesearch = `https://www.torn.com/page.php?sid=UserList&levelFrom=1&levelTo=14&lastAction=7#start=${randuserlist}`;
             // Comment this line and uncomment the one below it if you want the profile to open in a new tab
             //window.location.href = advancesearch;
             window.open(advancesearch, '_blank');
@@ -652,7 +707,7 @@
         insertAfter(container, document.querySelector('#react-root ul.f-war-list'));
     }
 
-    function saveData(){
+    function saveData() {
         //fix colors
         var rgba = hexToRgb(controls.color)
         rgba.a = controls.opacity;
@@ -661,7 +716,7 @@
         localStorage.chainWarcher = JSON.stringify(controls);
     }
 
-    function loadData(){
+    function loadData() {
         var savedData = JSON.parse(localStorage.chainWarcher || '{}');
 
         controls.watcherMinimized = savedData.watcherMinimized || false;
@@ -704,7 +759,7 @@
     function hexToRgb(hex) {
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
         var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-        hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        hex = hex.replace(shorthandRegex, function (m, r, g, b) {
             return r + r + g + g + b + b;
         });
 
