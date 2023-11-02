@@ -42,10 +42,14 @@
                     if (userIcons.length > 0 && !userIcons[0].querySelector(".advance-search-attack")) {
                         insertatkbtn(userIcons[0], addAtkLabels, userID);
                     }
+                    let iconWrap = this.querySelector('span.icons-wrap');
+                    iconWrap.style.display = 'inline';
+                    let iconTray = this.querySelector('span.icons-wrap > ul#iconTray');
+                    iconTray.style.display = 'inline';
                     let status = this.querySelectorAll('ul#iconTray > li');
                     for(let s of status){
                         if (unavailable.some(u=> s.title.includes(u))){
-                            this.style.display = 'none'
+                            this.style.display = 'none';
                         }
                     }
                 });
