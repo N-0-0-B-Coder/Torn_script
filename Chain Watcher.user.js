@@ -8,6 +8,8 @@
 // @author       DaoChauNghia[3029549] - modified on Chain Watcher by Jox [1714547] - only for personal using
 // @author       Jox [1714547]
 // @match        https://www.torn.com/factions.php*
+// @match        https://www.torn.com/page.php*
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js
 // @grant        GM_addStyle
 // ==/UserScript==
@@ -26,8 +28,7 @@
     z-index: 99999;
 }
 `);
-
-
+    const specificUrl = '/https:\/\/www\.torn\.com\/page\.php\?.*/';
     // Define requirements
     // These are user ID ranges that should cover players between 15 and 400 days old
     //const minID = 2800000;
@@ -100,10 +101,14 @@
     start();
 
     function start() {
-        loadData();
-        watchForChainTimer();
-        setInterval(markWallMembers, 500);
-        quickatkadvancesearch();
+        if (window.location.href.match(specificUrl)) {
+            quickatkadvancesearch();
+        }
+        else {
+            loadData();
+            watchForChainTimer();
+            setInterval(markWallMembers, 500);
+        }
     }
 
     function markWallMembers() {
@@ -195,6 +200,7 @@
     }
 
     function quickatkadvancesearch() {
+
         //
         const addAtkLabels = ["Attack"];
         const observerTarget = $(".content-wrapper")[0];
