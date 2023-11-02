@@ -16,58 +16,46 @@
     'use strict';
     let GM_addStyle = function (s) {
         let style = document.createElement("style");
-        style.type = "text/css";
         style.innerHTML = s;
         document.head.appendChild(style);
     };
     GM_addStyle(`
 .btn-wrap.advance-search-attack {
-	float: right;
-
+    float: right;
     z-index: 99999;
 }
 `);
-//    margin-left: auto;
     const addAtkLabels = ["Attack"];
     const observerTarget = $(".content-wrapper")[0];
     const observerConfig = { attributes: false, childList: true, characterData: false, subtree: true };
-    ////////////////////////////////////////////////////////////////
-    let userwrap = document.getElementById('userlist-wrapper');
+    const unavailable = ['Traveling','Hospital','Federal','Jail'];
+
     let AdSearchobserver = new MutationObserver(function(mutations) {
-        let havebtn = false;
-        let mutation = mutations[0].target;
-        if (mutation.classList.contains("user-info-list-wrap") || mutation.classList.contains("userlist-wrapper")) {
-            let containerID = $("ul.user-info-list-wrap > li");
-            containerID.find("div.level-icons-wrap span.user-icons").each(function(){
-                let user = this.parentElement.parentElement.className;
-                let userID = user.replace("user", "");
-                if (this.classList.contains("span.btn-wrap.advance-search-attack")){
-                }
-                else{
-                    insertatkbtn(this, addAtkLabels,userID);
-                    let zspan = this.querySelector("span.icons-wrap.icons");
-                    zspan.style.display = 'inline';
-                    let zul = this.querySelector("ul#iconTray.big.svg");
-                    zul.style.display = 'inline';
-                    havebtn = true;
-                }
-                if (havebtn){
-                    AdSearchobserver.disconnect();
-                }
-                else{
-                    AdSearchobserver.observe(observerTarget, observerConfig);
-                }
-            });
-        }
+        mutations.forEach((mutation) => {
+            if (mutation.target.classList.contains("user-info-list-wrap") || mutation.target.classList.contains("userlist-wrapper")) {
+                let containerID = $("ul.user-info-list-wrap > li");
+                containerID.each(function() {
+                    let user = this.className;
+                    let userID = user.replace("user", "");
+                    if (!this.querySelector(".advance-search-attack")) {
+                        insertatkbtn(this, addAtkLabels, userID);
+                    }
+                    let status = this.querySelectorAll('ul#iconTray > li');
+                    for(let s of status){
+                        if (unavailable.some(u=> s.title.includes(u))){
+                            this.style.display = 'none'
+                        }
+                    }
+                });
+            }
+        });
     });
 
     AdSearchobserver.observe(observerTarget, observerConfig);
 
-    ////////////////////////////////////////////////////////////////
-
     function insertatkbtn(element, buttonLabels, ID){
         const outerspanatk = document.createElement('span');
-        outerspanatk.className = 'btn-wrap.advance-search-attack';
+        outerspanatk.className = 'btn-wrap advance-search-attack';
 
         const innerspanatk = document.createElement('span');
         innerspanatk.className = 'btn';
@@ -82,12 +70,9 @@
 
         element.append(outerspanatk);
 
-        $(outerspanatk).on("click", "input", function(event) {
-            //this.parentNode.style.display = "none";
+        $(outerspanatk).on("click", "input", function() {
             let attack = `https://www.torn.com/loader.php?sid=attack&user2ID=${ID}`
             window.open(attack, '_blank');
         });
     }
-
-
 })();
