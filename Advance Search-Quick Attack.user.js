@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Advance Search-Quick Attack
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
 // @description  Filter unattackable target and quick attack button after advance search
@@ -21,7 +21,7 @@
     };
     GM_addStyle(`
 .btn-wrap.advance-search-attack {
-    float: right;
+    float: auto;
     margin-left: auto;
     z-index: 99999;
 }
