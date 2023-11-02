@@ -31,14 +31,8 @@
     const addAtkLabels = ["Attack"];
     const observerTarget = $(".content-wrapper")[0];
     const observerConfig = { attributes: false, childList: true, characterData: false, subtree: true };
+    ////////////////////////////////////////////////////////////////
     let userwrap = document.getElementById('userlist-wrapper');
-    /*$(document).ready(function() {
-        if (observerTarget.classList.contains('user-info-list-wrap')  || observerTarget.classList.contains("userlist-wrapper")){
-        let containerID = $("ul.user-info-list-wrap > li");
-            containerID.find("div.level-icons-wrap span.user-icons").each(function(){
-                insertatkbtn(this, addAtkLabels);
-            });
-    }*/
     let AdSearchobserver = new MutationObserver(function(mutations) {
         let havebtn = false;
         let mutation = mutations[0].target;
@@ -63,21 +57,13 @@
                 else{
                     AdSearchobserver.observe(observerTarget, observerConfig);
                 }
-                //let isParentRowDisabled = this.parentElement.parentElement.classList.contains("disabled");
-                //insertatkbtn(this, addAtkLabels);
-                /*let alreadyHasAtkBtn = this.querySelector(".btn-wrap.advance-search-attack") != null;
-                if (!alreadyHasAtkBtn){
-                    insertatkbtn(this, addAtkLabels);
-                    let zul = this.querySelector("ul#iconTray.big.svg");
-                    zul.style.zIndex = 1;
-                }*/
             });
         }
     });
-    $(document).ready(function() {
-        AdSearchobserver.observe(observerTarget, observerConfig);
-    });
+
     AdSearchobserver.observe(observerTarget, observerConfig);
+
+    ////////////////////////////////////////////////////////////////
 
     function insertatkbtn(element, buttonLabels, ID){
         const outerspanatk = document.createElement('span');
