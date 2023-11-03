@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chain Watcher
 // @namespace    http://tampermonkey.net/
-// @version      1.4.2
+// @version      1.4.3
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
 // @description  Watch the chain and advance target finding with filter and quick attack
@@ -584,7 +584,6 @@
         btnDonatorTargetFind.innerHTML = 'Advanced Target Finding';
         lblDonatorTargetFind.setAttribute('for', 'btnDonatorTargetFind');
         btnDonatorTargetFind.className = 'torn-btn';
-        btnDonatorTargetFind.classList.add('floating-button');
         btnDonatorTargetFind.type = 'button';
         btnDonatorTargetFind.id = 'btnDonatorTargetFind';
         btnDonatorTargetFind.name = 'btnDonatorTargetFind';
@@ -627,7 +626,6 @@
         var lblDonatorTargetFind = document.createElement('label');
         btnNormalTargetFind.innerHTML = 'Poor Target Finding';
         lblDonatorTargetFind.setAttribute('for', 'btnNormalTargetFind');
-        btnNormalTargetFind.classList.add('floating-button');
         btnNormalTargetFind.className = 'torn-btn';
         btnNormalTargetFind.type = 'button';
         btnNormalTargetFind.id = 'btnNormalTargetFind';
