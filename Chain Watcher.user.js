@@ -649,7 +649,7 @@
         });
         mutationObserver2.observe(bodyhtml2, { attributes: true });
         btnNormalTargetFind.onclick = function (e) {
-            let randID = getRandomNumber(minID,maxID);
+            let randID = getRandomNumber(minID, maxID);
             let profileLink = `https://www.torn.com/profiles.php?XID=${randID}`;
             // Comment this line and uncomment the one below it if you want the profile to open in a new tab
             //window.location.href = advancesearch;
