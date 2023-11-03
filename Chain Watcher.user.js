@@ -19,8 +19,8 @@
     'use strict';
     // Define requirements
     // These are user ID ranges that should cover players between 15 and 400 days old
-    //const minID = 2800000;
-    //const maxID = 3100000;
+    const minID = 2800000;
+    const maxID = 3100000;
     const minlist = 300;
     const maxlist = 1700;
     function getRandomNumber(min, max) {
@@ -579,37 +579,35 @@
 
         ////////////////////////////////
 
-        var btnEasyTargetFind = document.createElement('button');
-        var lblEasyTargetFind = document.createElement('label');
-        btnEasyTargetFind.innerHTML = 'Easy target finding';
-        lblEasyTargetFind.setAttribute('for', 'btnEasyTargetFind');
-        btnEasyTargetFind.type = 'button';
-        btnEasyTargetFind.id = 'btnEasyTargetFind';
-        btnEasyTargetFind.name = 'btnEasyTargetFind';
-        btnEasyTargetFind.style.margin = '0 5px';
-        btnEasyTargetFind.style.border = '1px solid #cdcdcd';
-        let bodyhtml = document.getElementById('body');
-        function changestylecolor() {
-            if (bodyhtml.hasAttribute('data-dark-mode-logo')) {
-                btnEasyTargetFind.style.color = 'white';
+        var btnDonatorTargetFind = document.createElement('button');
+        var lblDonatorTargetFind = document.createElement('label');
+        btnDonatorTargetFind.innerHTML = 'Advanced Target Finding';
+        lblDonatorTargetFind.setAttribute('for', 'btnDonatorTargetFind');
+        btnDonatorTargetFind.type = 'button';
+        btnDonatorTargetFind.id = 'btnDonatorTargetFind';
+        btnDonatorTargetFind.name = 'btnDonatorTargetFind';
+        btnDonatorTargetFind.style.margin = '0 5px';
+        btnDonatorTargetFind.style.border = '1px solid #cdcdcd';
+        let bodyhtml1 = document.getElementById('body');
+        function changestylecolor1() {
+            if (bodyhtml1.hasAttribute('data-dark-mode-logo')) {
+                btnDonatorTargetFind.style.color = 'white';
             }
             else {
-                btnEasyTargetFind.style.color = 'black';
+                btnDonatorTargetFind.style.color = 'black';
             }
         }
         $(document).ready(function () {
-            changestylecolor();
+            changestylecolor1();
         });
-        let mutationObserver = new MutationObserver(function (mutations) {
+        let mutationObserver1 = new MutationObserver(function (mutations) {
             mutations.forEach(function (mutation) {
-                changestylecolor();
+                changestylecolor1();
             });
         });
-        mutationObserver.observe(bodyhtml, { attributes: true });
-        btnEasyTargetFind.onclick = function (e) {
-            //let randID = getRandomNumber(minID,maxID);
+        mutationObserver1.observe(bodyhtml1, { attributes: true });
+        btnDonatorTargetFind.onclick = function (e) {
             let randuserlist = getRandomNumber(minlist, maxlist);
-            //let profileLink = `https://www.torn.com/profiles.php?XID=${randID}`;
             let advancesearch = `https://www.torn.com/page.php?sid=UserList&levelFrom=1&levelTo=14&lastAction=7#start=${randuserlist}`;
             // Comment this line and uncomment the one below it if you want the profile to open in a new tab
             //window.location.href = advancesearch;
@@ -618,8 +616,50 @@
         var p10 = document.createElement('p');
         p10.style.margin = '10px';
         body.appendChild(p10);
-        p10.appendChild(btnEasyTargetFind);
-        p10.appendChild(lblEasyTargetFind);
+        p10.appendChild(btnDonatorTargetFind);
+        p10.appendChild(lblDonatorTargetFind);
+
+        ////////////////////////////////
+
+        var btnNormalTargetFind = document.createElement('button');
+        var lblDonatorTargetFind = document.createElement('label');
+        btnNormalTargetFind.innerHTML = 'Poor Target Finding';
+        lblDonatorTargetFind.setAttribute('for', 'btnNormalTargetFind');
+        btnNormalTargetFind.type = 'button';
+        btnNormalTargetFind.id = 'btnNormalTargetFind';
+        btnNormalTargetFind.name = 'btnNormalTargetFind';
+        btnNormalTargetFind.style.margin = '0 5px';
+        btnNormalTargetFind.style.border = '1px solid #cdcdcd';
+        let bodyhtml2 = document.getElementById('body');
+        function changestylecolor2() {
+            if (bodyhtml2.hasAttribute('data-dark-mode-logo')) {
+                btnNormalTargetFind.style.color = 'white';
+            }
+            else {
+                btnNormalTargetFind.style.color = 'black';
+            }
+        }
+        $(document).ready(function () {
+            changestylecolor2();
+        });
+        let mutationObserver2 = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                changestylecolor2();
+            });
+        });
+        mutationObserver2.observe(bodyhtml2, { attributes: true });
+        btnNormalTargetFind.onclick = function (e) {
+            let randID = getRandomNumber(minID,maxID);
+            let profileLink = `https://www.torn.com/profiles.php?XID=${randID}`;
+            // Comment this line and uncomment the one below it if you want the profile to open in a new tab
+            //window.location.href = advancesearch;
+            window.open(profileLink, '_blank');
+        }
+        var p11 = document.createElement('p');
+        p11.style.margin = '10px';
+        body.appendChild(p11);
+        p11.appendChild(btnNormalTargetFind);
+        p11.appendChild(lblDonatorTargetFind);
 
         ////////////////////////////////
 
