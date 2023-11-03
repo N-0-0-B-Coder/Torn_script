@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chain Watcher
 // @namespace    http://tampermonkey.net/
-// @version      1.4.0
+// @version      1.4.1
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
 // @description  Watch the chain and advance target finding with filter and quick attack
@@ -11,24 +11,12 @@
 // @match        https://www.torn.com/page.php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js
+// @require      https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
 // @grant        GM_addStyle
 // ==/UserScript==
 
 (function () {
     'use strict';
-    let GM_addStyle = function (s) {
-        let style = document.createElement("style");
-        style.innerHTML = s;
-        document.head.appendChild(style);
-    };
-    GM_addStyle(`
-.btn-wrap.advance-search-attack {
-	float: auto;
-    margin-left: auto;
-    z-index: 99999;
-}
-`);
-    const specificUrl = '/https:\/\/www\.torn\.com\/page\.php\?.*/';
     // Define requirements
     // These are user ID ranges that should cover players between 15 and 400 days old
     //const minID = 2800000;
@@ -101,14 +89,9 @@
     start();
 
     function start() {
-        if (window.location.href.match(specificUrl)) {
-            quickatkadvancesearch();
-        }
-        else {
-            loadData();
-            watchForChainTimer();
-            setInterval(markWallMembers, 500);
-        }
+        loadData();
+        watchForChainTimer();
+        setInterval(markWallMembers, 500);
     }
 
     function markWallMembers() {
@@ -199,65 +182,6 @@
     `);
     }
 
-    function quickatkadvancesearch() {
-
-        //
-        const addAtkLabels = ["Attack"];
-        const observerTarget = $(".content-wrapper")[0];
-        const observerConfig = { attributes: false, childList: true, characterData: false, subtree: true };
-        const unavailable = ['Traveling', 'Hospital', 'Federal', 'Jail'];
-
-        let AdSearchobserver = new MutationObserver(function (mutations) {
-            mutations.forEach((mutation) => {
-                if (mutation.target.classList.contains("user-info-list-wrap") || mutation.target.classList.contains("userlist-wrapper")) {
-                    let containerID = $("ul.user-info-list-wrap > li");
-                    containerID.each(function () {
-                        let user = this.className;
-                        let userID = user.replace("user", "");
-                        let userIcons = $(this).find("div.level-icons-wrap > span.user-icons");
-                        if (userIcons.length > 0 && !userIcons[0].querySelector(".advance-search-attack")) {
-                            insertatkbtn(userIcons[0], addAtkLabels, userID);
-                        }
-                        let iconWrap = this.querySelector('span.icons-wrap');
-                        iconWrap.style.display = 'inline';
-                        let iconTray = this.querySelector('span.icons-wrap > ul#iconTray');
-                        iconTray.style.display = 'inline';
-                        let status = this.querySelectorAll('ul#iconTray > li');
-                        for (let s of status) {
-                            if (unavailable.some(u => s.title.includes(u))) {
-                                this.style.display = 'none';
-                            }
-                        }
-                    });
-                }
-            });
-        });
-
-        AdSearchobserver.observe(observerTarget, observerConfig);
-
-        function insertatkbtn(element, buttonLabels, ID) {
-            const outerspanatk = document.createElement('span');
-            outerspanatk.className = 'btn-wrap advance-search-attack';
-
-            const innerspanatk = document.createElement('span');
-            innerspanatk.className = 'btn';
-
-            const inputElementAtk = document.createElement('input');
-            inputElementAtk.type = 'button';
-            inputElementAtk.value = buttonLabels[0];
-            inputElementAtk.className = 'torn-btn';
-
-            innerspanatk.appendChild(inputElementAtk);
-            outerspanatk.appendChild(innerspanatk);
-
-            element.append(outerspanatk);
-
-            $(outerspanatk).on("click", "input", function () {
-                let attack = `https://www.torn.com/loader.php?sid=attack&user2ID=${ID}`
-                window.open(attack, '_blank');
-            });
-        }
-    }
 
     function watchForChainTimer() {
         let target = document.getElementById('factions');
