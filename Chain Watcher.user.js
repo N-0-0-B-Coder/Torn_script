@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Chain Watcher
 // @namespace    http://tampermonkey.net/
-// @version      1.4.3
+// @version      1.4.4
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Chain%20Watcher.user.js
 // @description  Watch the chain and advance target finding with filter and quick attack
@@ -615,7 +615,7 @@
             window.open(advancesearch, '_blank');
         }
         var p10 = document.createElement('p');
-        p10.style.margin = '10px';
+        p10.style.margin = '2px';
         body.appendChild(p10);
         p10.appendChild(btnDonatorTargetFind);
         p10.appendChild(lblDonatorTargetFind);
@@ -658,7 +658,7 @@
             window.open(profileLink, '_blank');
         }
         var p11 = document.createElement('p');
-        p11.style.margin = '10px';
+        p11.style.margin = '2px';
         body.appendChild(p11);
         p11.appendChild(btnNormalTargetFind);
         p11.appendChild(lblDonatorTargetFind);
