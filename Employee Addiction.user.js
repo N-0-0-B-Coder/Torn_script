@@ -30,10 +30,13 @@
     }
 
     // Function to copy text to clipboard and open a new page
+    // Change the addiction threshold here
+    // Change the text here
+
     function copyTextAndOpenPage(name, employeeId, addiction) {
-        const copyText = addiction < -9
-            ? `Good day ${name}, your addict is high, time to go to rehab`
-            : `Good day ${name}, remember to maintain your addict small`;
+        const copyText = addiction < -9 /// Change the addiction threshold here ///
+            ? `Good day ${name}, your addict is high, time to go to rehab` /// Change the text here ///
+            : `Good day ${name}, remember to maintain your addict small`; /// Change the text here ///
 
         // Copy text to clipboard
         copyToClipboard(copyText);
@@ -43,7 +46,8 @@
         window.open(composeUrl, '_blank');
 
         // Display an alert
-        alert(`Text "${copyText}" copied to clipboard! Opening new page to compose message.`);
+        alert(`Text copied to clipboard! Opening new page to compose message.`);
+        //alert(`Text "${copyText}" copied to clipboard! Opening new page to compose message.`);
     }
 
     // Function to copy text to clipboard
@@ -144,12 +148,8 @@
             // Append the contentBelowBox as a child of the employBox
             employBox.appendChild(contentBelowBox);
 
-            // ... (your existing code)
-
             // Initialize an empty dictionary to store employee names, addiction values, and relative values
             const Employ = {};
-
-            // ... (your existing code)
 
             allEmployeeIds.forEach(employeeId => {
                 const employee = companyEmployees[employeeId];
