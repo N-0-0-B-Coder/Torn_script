@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.0.4
+// @version      1.0.5
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
