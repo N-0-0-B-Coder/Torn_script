@@ -7,6 +7,7 @@
 // @description  Display employee addiction values and message them with text when click on name
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*
+// @exclude      https://www.torn.com/preferences.php#tab=api
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // @grant        GM_setValue
 // @grant        GM_getValue
