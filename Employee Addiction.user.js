@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.0.5
+// @version      1.0.7
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -17,7 +17,7 @@
     'use strict';
 
     var addictionThreshold = -9; /// Change the addiction threshold here ///
-
+    var controls = {}; // Initialize an empty dictionary to store control elements
     // Function to check the API key
     async function checkApiKey(apiKey) {
         const apiUrl = `https://api.torn.com/company/?selections=employees&key=${apiKey}`;
@@ -56,7 +56,6 @@
         } else {
             // Code to cancel the deletion
         }
-
     }
 
     // Function to copy text to clipboard
@@ -67,6 +66,17 @@
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
+    }
+
+    // Function to save collapse/uncollapse state
+    function saveCollapseState() {
+        localStorage.employeeBox = JSON.stringify(controls);
+    }
+
+    // Function to retrieve collapse/uncollapse state
+    function getCollapseState() {
+        const storedControls = JSON.parse(localStorage.employeeBox || '{}');
+        controls.boxMinimized = storedControls.boxMinimized || false;
     }
 
     // Function ask the user for the API key
@@ -89,7 +99,6 @@
                     alert(`Error. Please enter a valid limited Torn API key.`);
                     askforapikey();
                     location.reload();
-                    //GM_setValue('apiKey', 'null');
                     return; // Terminate the script to prevent further execution
                 }
             }
@@ -104,7 +113,7 @@
             }
         }
     }
-
+    getCollapseState();
     // Fetch data using the validated API key
     if (storedApiKey !== 'null') {
         try {
@@ -117,7 +126,6 @@
 
             // Set attributes for the new div
             employBox.id = 'employBox';
-            //employBox.style.padding = '10px';
             employBox.style.marginTop = '10px';
 
             // Create a new div element for the delimiter
@@ -135,19 +143,34 @@
             // Create a button for collapse/uncollapse
             const collapseButton = document.createElement('a');
             collapseButton.className = 't-blue'; // Add the "t-blue" class
-            collapseButton.textContent = '[Hide]'; // Default state is collapsed
+            if (controls.boxMinimized) {
+                collapseButton.textContent = '[Show]';
+            } else {
+                collapseButton.textContent = '[Hide]';
+            }
             collapseButton.style.marginLeft = '10px'; // Right margin set to 10px
             collapseButton.style.float = 'right'; // Float to the right
 
             // Create a div for the content below the box name
             const contentBelowBox = document.createElement('div');
             contentBelowBox.id = 'contentBelowBox';
+            if (controls.boxMinimized) {
+                contentBelowBox.style.display = 'none';
+            } else {
+                contentBelowBox.style.display = 'block';
+            }
 
             // Toggle the visibility of the content below the box name and update the button text on click
             collapseButton.addEventListener('click', () => {
-                const isHidden = contentBelowBox.style.display === 'none';
-                contentBelowBox.style.display = isHidden ? 'block' : 'none';
-                collapseButton.textContent = isHidden ? '[Hide]' : '[Show]';
+                controls.boxMinimized = !controls.boxMinimized;
+                if (controls.boxMinimized) {
+                    collapseButton.textContent = '[Show]';
+                    contentBelowBox.style.display = 'none';
+                } else {
+                    collapseButton.textContent = '[Hide]';
+                    contentBelowBox.style.display = 'block';
+                }
+                saveCollapseState();
             });
 
             // Append the box name and collapse/uncollapse button to the employBox
@@ -210,8 +233,6 @@
             });
 
             // ... (your existing code)
-
-
 
             // Log the final dictionary
             console.log('Employ Dictionary:', Employ);
