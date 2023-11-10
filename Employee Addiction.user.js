@@ -11,7 +11,7 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-(async function() {
+(async function () {
     'use strict';
 
     // Function to check the API key
@@ -57,7 +57,7 @@
 
     // Function ask the user for the API key
     var storedApiKey = GM_getValue('apiKey');
-    function askforapikey(){
+    function askforapikey() {
         storedApiKey = prompt('Please enter your Torn API key (or click "Cancel" to skip):') || 'null';
         GM_setValue('apiKey', storedApiKey);
     }
@@ -68,28 +68,28 @@
     }
     //check the API key everytime the website is loaded
     if (storedApiKey !== 'null') {
-            try {
-                const checkapi = await checkApiKey(storedApiKey);
-                if (checkapi.error){
-                    if (checkapi.error.code === 2 || checkapi.error.code === 16){
-                        alert(`Error. Please enter a valid limited Torn API key.`);
-                        askforapikey();
-                        location.reload();
-                        //GM_setValue('apiKey', 'null');
-                        return; // Terminate the script to prevent further execution
-                    }
-                }
-            } catch (error) {
-                console.error(`Error during API key validation: ${error}`);
-
-                // If access level is not high enough or incorrect key, re-ask the user for the API key
-                if (error === 'Access level of this key is not high enough' || error === 'Incorrect key') {
-                    alert(`Error: ${error}. Please enter a valid Torn API key.`);
-                    GM_setValue('apiKey', 'null');
+        try {
+            const checkapi = await checkApiKey(storedApiKey);
+            if (checkapi.error) {
+                if (checkapi.error.code === 2 || checkapi.error.code === 16) {
+                    alert(`Error. Please enter a valid limited Torn API key.`);
+                    askforapikey();
+                    location.reload();
+                    //GM_setValue('apiKey', 'null');
                     return; // Terminate the script to prevent further execution
                 }
             }
+        } catch (error) {
+            console.error(`Error during API key validation: ${error}`);
+
+            // If access level is not high enough or incorrect key, re-ask the user for the API key
+            if (error === 'Access level of this key is not high enough' || error === 'Incorrect key') {
+                alert(`Error: ${error}. Please enter a valid Torn API key.`);
+                GM_setValue('apiKey', 'null');
+                return; // Terminate the script to prevent further execution
+            }
         }
+    }
 
     // Fetch data using the validated API key
     if (storedApiKey !== 'null') {
@@ -119,10 +119,11 @@
             boxName.textContent = 'Addiction';
 
             // Create a button for collapse/uncollapse
-            const collapseButton = document.createElement('button');
+            const collapseButton = document.createElement('a');
             collapseButton.className = 't-blue'; // Add the "t-blue" class
-            collapseButton.textContent = 'Hide'; // Default state is collapsed
+            collapseButton.textContent = '[Hide]'; // Default state is collapsed
             collapseButton.style.marginLeft = '10px'; // Right margin set to 10px
+            collapseButton.style.float = 'right'; // Float to the right
 
             // Create a div for the content below the box name
             const contentBelowBox = document.createElement('div');
@@ -132,7 +133,7 @@
             collapseButton.addEventListener('click', () => {
                 const isHidden = contentBelowBox.style.display === 'none';
                 contentBelowBox.style.display = isHidden ? 'block' : 'none';
-                collapseButton.textContent = isHidden ? 'Hide' : 'Show';
+                collapseButton.textContent = isHidden ? '[Hide]' : '[Show]';
             });
 
             // Append the box name and collapse/uncollapse button to the employBox
@@ -142,17 +143,23 @@
             // Append the contentBelowBox as a child of the employBox
             employBox.appendChild(contentBelowBox);
 
-            const Employ = {}; // Initialize an empty dictionary to store employee names and addiction values
+            // ... (your existing code)
+
+            // Initialize an empty dictionary to store employee names, addiction values, and relative values
+            const Employ = {};
+
+            // ... (your existing code)
 
             allEmployeeIds.forEach(employeeId => {
                 const employee = companyEmployees[employeeId];
                 const name = employee.name;
                 const addiction = employee.effectiveness.addiction || 0;
+                const relative = employee.last_action.relative || "N/A"; // Default to "N/A" if relative is not present
 
-                // Add employee name and addiction value to the dictionary
-                Employ[name] = { addict: addiction };
+                // Add employee name, addiction value, and relative value to the dictionary
+                Employ[name] = { addict: addiction, relative: relative };
 
-                // Create a row for each employee with name and addiction value
+                // Create a row for each employee with name, addiction value, and relative value
                 const row = document.createElement('p');
                 row.style.lineHeight = '20px';
                 row.style.textDecoration = 'none';
@@ -161,7 +168,7 @@
                 // Create a link element for copying to clipboard and opening a new page
                 const copyLink = document.createElement('a');
                 copyLink.className = 't-blue href desc';
-                copyLink.style.display = 'inline-block';
+                copyLink.style.display = 'block'; // Display as block to stack elements vertically
                 copyLink.href = '#';
                 copyLink.textContent = name;
 
@@ -173,18 +180,28 @@
 
                 // Create a span element for the addiction value
                 const addictionSpan = document.createElement('span');
-                addictionSpan.style.float = 'right';
-                addictionSpan.textContent = addiction;
+                addictionSpan.style.display = 'inline-block'; // Display as inline-block to be on the same line as the link
+                addictionSpan.textContent = `Addiction: ${addiction}`;
 
-                // Append the link and addiction span to the row
+                // Create a span element for the relative value
+                const relativeSpan = document.createElement('span');
+                relativeSpan.style.display = 'block'; // Display as block to move to the next line
+                relativeSpan.textContent = `Last action: ${relative}`;
+
+                // Append the link and spans to the row
                 row.appendChild(copyLink);
                 row.appendChild(addictionSpan);
+                row.appendChild(relativeSpan);
 
                 // Append the row to the contentBelowBox
                 contentBelowBox.appendChild(row);
 
-                console.log(`${name}'s addiction value: ${addiction}`);
+                console.log(`${name}'s addiction value: ${addiction}, relative value: ${relative}`);
             });
+
+            // ... (your existing code)
+
+
 
             // Log the final dictionary
             console.log('Employ Dictionary:', Employ);
