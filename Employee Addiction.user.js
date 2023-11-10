@@ -163,7 +163,7 @@
                 const row = document.createElement('p');
                 row.style.lineHeight = '20px';
                 row.style.textDecoration = 'none';
-                row.id = `npcTimer${employeeId}`;
+                row.id = `employee${employeeId}`;
 
                 // Create a link element for copying to clipboard and opening a new page
                 const copyLink = document.createElement('a');
