@@ -31,7 +31,7 @@
 
     // Function to copy text to clipboard and open a new page
     function copyTextAndOpenPage(name, employeeId, addiction) {
-        const copyText = addiction < -10
+        const copyText = addiction < -9
             ? `Good day ${name}, your addict is high, time to go to rehab`
             : `Good day ${name}, remember to maintain your addict small`;
 
