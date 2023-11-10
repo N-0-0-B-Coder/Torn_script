@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.0.7
+// @version      1.0.8
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -210,6 +210,11 @@
                     event.preventDefault();
                     copyTextAndOpenPage(name, employeeId, addiction);
                 });
+
+                // Check if addiction value is below the threshold, and change the name color accordingly
+                if (addiction < addictionThreshold) {
+                    copyLink.style.color = 'red';
+                }
 
                 // Create a span element for the addiction value
                 const addictionSpan = document.createElement('span');
