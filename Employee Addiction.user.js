@@ -16,6 +16,8 @@
 (async function () {
     'use strict';
 
+    var addictionThreshold = -9; /// Change the addiction threshold here ///
+
     // Function to check the API key
     async function checkApiKey(apiKey) {
         const apiUrl = `https://api.torn.com/company/?selections=employees&key=${apiKey}`;
@@ -35,20 +37,26 @@
     // Change the text here
 
     function copyTextAndOpenPage(name, employeeId, addiction) {
-        const copyText = addiction < -9 /// Change the addiction threshold here ///
-            ? `Good day ${name}, your addict is high, time to go to rehab` /// Change the text here ///
-            : `Good day ${name}, remember to maintain your addict small`; /// Change the text here ///
-
+        let copyText;
+        if (addiction < addictionThreshold) {
+            copyText = `Good day my friend ${name}, your addict is ${addiction} which is high, time to go to rehab!`; /// Change the text here ///
+        } else {
+            copyText = ``;
+        }
         // Copy text to clipboard
         copyToClipboard(copyText);
 
-        // Open new page
-        const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
-        window.open(composeUrl, '_blank');
-
         // Display an alert
-        alert(`Text copied to clipboard! Opening new page to compose message.`);
+        alert(`Text copied to clipboard! :)`);
         //alert(`Text "${copyText}" copied to clipboard! Opening new page to compose message.`);
+        if (confirm("Do you want to open mail to this employee?")) {
+            // Open new page
+            const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
+            window.open(composeUrl, '_blank');
+        } else {
+            // Code to cancel the deletion
+        }
+
     }
 
     // Function to copy text to clipboard
