@@ -92,6 +92,7 @@
         }
     }
 
+    // Check if the API key is stored
     if (!storedApiKey || storedApiKey === 'null') {
         askforapikey();
     }
