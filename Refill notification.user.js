@@ -1,7 +1,7 @@
-/// ==UserScript==
+// ==UserScript==
 // @name         Refill Notification
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.9
 // @description  Notify user about daily refills with dots under user points
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*
@@ -14,14 +14,13 @@
 
     var controls = {}; // Object to store controls
 
-
-    //function to save switch state
-    function saverefillswitch() {
+    // Function to save switch state
+    function saveRefillSwitch() {
         localStorage.refillnoti = JSON.stringify(controls);
     }
 
-    //function to load switch state
-    function loadrefillswitch() {
+    // Function to load switch state
+    function loadRefillSwitch() {
         const storedControls = JSON.parse(localStorage.refillnoti || '{}');
         controls.refillswitch = storedControls.refillswitch || false;
     }
@@ -52,7 +51,7 @@
             localStorage.setItem('tornApiKey', apiKey);
 
             // Load the switch state before creating the switch button and dots
-            loadrefillswitch();
+            loadRefillSwitch();
 
             // Create a box as a child element of the specified class element
             const pointBlock = document.querySelector('.point-block___rQyUK.tt-points-value');
@@ -92,7 +91,7 @@
         dot.style.borderRadius = '50%';
         dot.style.marginRight = '5px';
         dot.style.backgroundColor = condition ? color : 'transparent';
-        dot.style.color = condition ? 'white' : 'transparent';
+        dot.style.color = condition && controls.refillswitch ? 'white' : 'transparent';
         dot.style.display = 'flex';
         dot.style.alignItems = 'center';
         dot.style.justifyContent = 'center';
@@ -106,8 +105,7 @@
         switchButton.textContent = '[switch]';
         switchButton.className = 't-blue'; // Add "t-blue" class to the button
         switchButton.style.display = 'flex';
-        switchButton.style.marginLeft = 'auto'; // Add the dots at right of dots
-        switchButton.style.cursor = 'pointer';
+        switchButton.style.marginLeft = 'auto'; // Add the dots at the right of dots
         switchButton.addEventListener('click', () => {
             controls.refillswitch = !controls.refillswitch;
             // Toggle the visibility of characters in the dots
@@ -119,10 +117,9 @@
                     dot.style.color = 'transparent';
                 }
             });
-            saverefillswitch();
+            saveRefillSwitch();
         });
         return switchButton;
     }
-
 
 })();
