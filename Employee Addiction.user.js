@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.0.8
+// @version      1.0.9
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -83,12 +83,17 @@
     var storedApiKey = GM_getValue('apiKey');
     function askforapikey() {
         storedApiKey = prompt('Please enter your Torn API key (or click "Cancel" to skip):') || 'null';
-        GM_setValue('apiKey', storedApiKey);
+        if (storedApiKey !== 'null') {
+            GM_setValue('apiKey', storedApiKey);
+            location.reload();
+        } else {
+            alert('You have chosen not to provide an API key. The script will not run.');
+            GM_setValue('apiKey', storedApiKey);
+        }
     }
 
     if (!storedApiKey || storedApiKey === 'null') {
         askforapikey();
-        location.reload();
     }
     //check the API key everytime the website is loaded
     if (storedApiKey !== 'null') {
@@ -98,7 +103,6 @@
                 if (checkapi.error.code === 2 || checkapi.error.code === 16) {
                     alert(`Error. Please enter a valid limited Torn API key.`);
                     askforapikey();
-                    location.reload();
                     return; // Terminate the script to prevent further execution
                 }
             }
