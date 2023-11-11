@@ -106,6 +106,7 @@
         switchButton.className = 't-blue'; // Add "t-blue" class to the button
         switchButton.style.display = 'flex';
         switchButton.style.marginLeft = 'auto'; // Add the dots at the right of dots
+        switchButton.style.cursor = 'pointer';
         switchButton.addEventListener('click', () => {
             controls.refillswitch = !controls.refillswitch;
             // Toggle the visibility of characters in the dots
