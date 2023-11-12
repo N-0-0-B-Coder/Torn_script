@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Refill Notification
 // @namespace    http://tampermonkey.net/
-// @version      0.9
+// @version      0.10
 // @description  Notify user about daily refills with dots under user points
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*
@@ -17,12 +17,12 @@
 
     // Function to save switch state
     function saveRefillSwitch() {
-        GM_setValue('refillnoti', JSON.stringify(controls));
+        localStorage.refillnoti = JSON.stringify(controls);
     }
 
     // Function to load switch state
     function loadRefillSwitch() {
-        const storedControls = JSON.parse(GM_getValue('refillnoti', '{}'));
+        const storedControls = JSON.parse(localStorage.refillnoti || '{}');
         controls.refillswitch = storedControls.refillswitch || false;
     }
 
