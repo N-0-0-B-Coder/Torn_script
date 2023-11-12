@@ -11,7 +11,7 @@
 // @match        https://www.torn.com/page.php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // @require      https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js
-// @require      https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
+// @require      https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Search-Quick%20Attack.user.js
 // @grant        GM_addStyle
 // ==/UserScript==
 
