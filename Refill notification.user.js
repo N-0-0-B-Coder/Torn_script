@@ -6,7 +6,8 @@
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*
 // @exclude      https://www.torn.com/preferences*
-// @grant        none
+// @grant        GM_setValue
+// @grant        GM_getValue
 // ==/UserScript==
 
 (async function () {
@@ -16,17 +17,17 @@
 
     // Function to save switch state
     function saveRefillSwitch() {
-        localStorage.refillnoti = JSON.stringify(controls);
+        GM_setValue('refillnoti', JSON.stringify(controls));
     }
 
     // Function to load switch state
     function loadRefillSwitch() {
-        const storedControls = JSON.parse(localStorage.refillnoti || '{}');
+        const storedControls = JSON.parse(GM_getValue('refillnoti', '{}'));
         controls.refillswitch = storedControls.refillswitch || false;
     }
 
     // Verify the stored API key
-    let apiKey = localStorage.getItem('tornApiKey');
+    let apiKey = GM_getValue('tornApiKey', 'null');
     if (!apiKey || apiKey === 'null') {
         apiKey = prompt('Please enter your Torn API key:');
         if (!apiKey) {
@@ -43,12 +44,18 @@
 
         if (data.error && data.error.code === 2) {
             // Incorrect key, alert the user, set API key to "null", and reload the page
-            alert('Incorrect API key. Please enter a valid Torn API key.');
-            localStorage.setItem('tornApiKey', 'null');
-            location.reload();
+            if (apiKey === 'null') {
+                // User canceled the prompt, do not reload the page
+                alert('You have chosen not to provide an API key. The script will not run.');
+                return;
+            } else {
+                alert('Incorrect API key. Please enter a valid Torn API key.');
+                GM_setValue('tornApiKey', 'null');
+                location.reload();
+            }
         } else {
             // API key is valid, store it
-            localStorage.setItem('tornApiKey', apiKey);
+            GM_setValue('tornApiKey', apiKey);
 
             // Load the switch state before creating the switch button and dots
             loadRefillSwitch();
@@ -79,7 +86,7 @@
     } catch (error) {
         console.error('Error verifying API key:', error);
         alert('Error verifying API key. Please try again.');
-        localStorage.setItem('tornApiKey', 'null'); // Reset API key to "null" in case of an error
+        GM_setValue('tornApiKey', 'null'); // Reset API key to "null" in case of an error
         location.reload();
     }
 
