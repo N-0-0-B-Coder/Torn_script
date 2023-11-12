@@ -2,8 +2,8 @@
 // @name         Advance Search-Quick Attack
 // @namespace    http://tampermonkey.net/
 // @version      1.0.1
-// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
-// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Advance%20Search-Quick%20Attack.user.js
+// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Search-Quick%20Attack.user.js
+// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Search-Quick%20Attack.user.js
 // @description  Filter unattackable target and quick attack button after advance search
 // @author       DaoChauNghia[3029549]
 // @match        https://www.torn.com/page.php*
