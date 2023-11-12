@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Refill Notification
+// @name         [V.O.T.T] Refill Notification
 // @namespace    http://tampermonkey.net/
 // @version      0.11
 // @description  Notify user about daily refills with dots under user points
