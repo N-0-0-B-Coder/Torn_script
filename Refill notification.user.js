@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Refill Notification
 // @namespace    http://tampermonkey.net/
-// @version      0.10
+// @version      0.11
 // @description  Notify user about daily refills with dots under user points
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*
@@ -43,7 +43,7 @@
         const response = await fetch(verificationUrl);
         var data = await response.json();
 
-        if (data.error && data.error.code === 2) {
+        if (data && data.error && data.error.code === 2) {
             // Incorrect key, alert the user, set API key to "null", and reload the page
             if (apiKey === 'null') {
                 // User canceled the prompt, do not reload the page
@@ -62,7 +62,8 @@
             loadRefillSwitch();
 
             // Create a box as a child element of the specified class element
-            const pointBlock = document.querySelector('.point-block___rQyUK.tt-points-value');
+            const pointBox = document.querySelectorAll('.point-block___rQyUK');
+            const pointBlock = pointBox[2];
             const refillBox = document.createElement('div');
             refillBox.style.display = 'flex';
             refillBox.style.alignItems = 'center';
@@ -80,6 +81,7 @@
             // Append the refillBox to the pointBlock
             pointBlock.appendChild(refillBox);
 
+
             // Create a switch button
             const switchButton = createSwitchButton(refillBox);
             refillBox.appendChild(switchButton);
@@ -88,7 +90,7 @@
         console.error('Error verifying API key:', error);
         alert('Error verifying API key. Please try again.');
         GM_setValue('tornApiKey', 'null'); // Reset API key to "null" in case of an error
-        location.reload();
+        //location.reload();
     }
 
     // Function to create colored dot with character
