@@ -64,7 +64,7 @@
                 loadRefillSwitch();
 
                 // Create a box as a child element of the specified class element
-                const pointBox = document.querySelectorAll('.point-block');
+                const pointBox = document.querySelectorAll('.point-block___rQyUK');
                 const pointBlock = pointBox[2];
                 const refillBox = document.createElement('div');
                 refillBox.style.display = 'flex';
@@ -81,7 +81,11 @@
                 refillBox.appendChild(tokenDot);
 
                 // Append the refillBox to the pointBlock
-                pointBlock.appendChild(refillBox);
+                if (pointBlock) {
+                    pointBlock.appendChild(refillBox);
+                } else {
+                    console.error('Could not find the third .point-block element');
+                }
 
 
                 // Create a switch button
