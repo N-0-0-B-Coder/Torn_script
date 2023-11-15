@@ -9,6 +9,8 @@
 // @grant        GM_info
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @grant        GM_xmlhttpRequest
+// @grant        GM_addStyle
 // ==/UserScript==
 
 // #region Variables
@@ -19,6 +21,12 @@ var OnMobile = false
 var VOTTSettingsDiv;
 var VOTTSettingsMenuArea;
 var VOTTSettingsMenuContent;
+
+var ValidateEndText;
+var apiRegister;
+var successValidatemainAPIKey;
+var errorValidatemainAPIKey;
+
 
 // #endregion
 
@@ -55,6 +63,7 @@ function CheckStorageBoolWithDefaultValue(key, defaultValueIfUnset) {
 // #endregion
 
 // #region Style
+
 var styleToAdd = document.createElement('style');
 
 /* Style the tab */
@@ -71,11 +80,13 @@ styleToAdd.innerHTML += '.VOTT_Setting_Menu button.active { background-color: bl
 
 styleToAdd.innerHTML += '.VOTT_SettingsCellMenu {width:100px; background:white; height:370px; vertical-align: top !important;}';
 
-styleToAdd.innerHTML += '.VOTT_SettingsCellHeader {text-align: center; font-size: 18px !important; background: black; color: white;}';
+styleToAdd.innerHTML += '.VOTT_SettingsHeader {text-align: center; font-size: 18px !important; background: black; color: white;}';
 
+styleToAdd.innerHTML += '@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap");';
 
 /* Buttons in Option menu content */
 styleToAdd.innerHTML += '.VOTT_buttonInOptionMenu { background-color: black; border-radius: 4px; border-style: none; box-sizing: border-box; color: #fff;cursor: pointer;display: inline-block; font-family: "Farfetch Basis", "Helvetica Neue", Arial, sans-serif;';
+styleToAdd.innerHTML += '.VOTT_buttonInOptionMenu:hover {border-radius: 5px solid #888; background-color: #ddd;}'
 styleToAdd.innerHTML += 'font-size: 12px; margin: 5px; max-width: none; outline: none;overflow: hidden;  padding: 5px 5px; position: relative;  text-align: center;}';
 
 /* Style the tab content */
@@ -101,10 +112,10 @@ styleToAdd.innerHTML += 'text-transform: none;  user-select: none; -webkit-user-
 styleToAdd.innerHTML += '.VOTT_button: hover, .VOTT_button:focus { opacity: .75;}'
 
 // Get the first script tag
-var ref = document.querySelector('script');
+//var ref = document.querySelector('script');
 
 // Insert our new styles before the first script tag
-ref.parentNode.insertBefore(styleToAdd, ref);
+document.head.appendChild(styleToAdd);
 
 // #endregion
 
@@ -165,16 +176,28 @@ function IsPage(pageType) {
     return window.location.href.startsWith(mapPageTypeAddress[pageType]);
 }
 
+function LogInfo(value) {
+    var now = new Date();
+    console.log(": [** VOTT **] " + now.toISOString() + " - " + value);
+}
+
+function JSONparse(str) {
+    try {
+        return JSON.parse(str);
+    } catch (e) { }
+    return null;
+}
+
 // #endregion
 
 // #region Menu Settings
 
 // Inject VOTT Settings button in profile page
-function InjectOptionMenuButtonInProfile(node) {
-    if (!node) {
+function SettingsMenuButton_Profile(Selector) {
+    if (!Selector) {
         return;
     }
-    if (node.className.indexOf('mobile') !== -1) {
+    if (Selector.className.indexOf('mobile') !== -1) {
         OnMobile = true;
         return;
     }
@@ -182,11 +205,11 @@ function InjectOptionMenuButtonInProfile(node) {
 
     let btnOpenSetting = document.createElement('a');
     btnOpenSetting.className = "t-clear h c-pointer line-h24 right";
-    btnOpenSetting.innerHTML = '<div class="VOTT_button" style="font-size:x-small"><img src="' + VOTTIcon + '" style="max-width:100px;max-height:16px;vertical-align:middle;"/> SETTINGS</div>';
+    btnOpenSetting.innerHTML = '<div class="VOTT_button" style="font-size:x-small"><img src="' + VOTTIcon + '" style="max-width:100px;max-height:16px;vertical-align:middle;"/></div>';
     btnOpenSetting.addEventListener("click", () => {
         console.log("Open/Close Setting");
         if (VOTTSettingsDiv == undefined) {
-            BuildSettingsMenu(document.querySelector(".content-title"));
+            SettingsMenu(document.querySelector(".content-title"));
         }
 
         if (VOTTSettingsDiv.style.display == "block") {
@@ -203,7 +226,7 @@ function InjectOptionMenuButtonInProfile(node) {
 }
 
 //create main menu table of the script
-function BuildSettingsMenu(node) {
+function SettingsMenu(Selector) {
 
     VOTTSettingsDiv = document.createElement('div');
     VOTTSettingsDiv.style.background = "lightgray";
@@ -220,27 +243,37 @@ function BuildSettingsMenu(node) {
 
     let thead = table.createTHead();
     let rowHeader = thead.insertRow();
-    let th = document.createElement("th");
-    th.className = "VOTT_SettingsCellHeader";
-    th.colSpan = 2;
+    let MenuHeader1 = document.createElement("th");
+    MenuHeader1.className = "VOTT_SettingsHeader";
+    //MenuHeader.colSpan = 2;
 
-    let imgDivVOTTSettingsDiv = document.createElement("div");
-    imgDivVOTTSettingsDiv.innerHTML = '<img src="' + VOTTIcon + '" style="max-width:150px;max-height:100px;vertical-align:middle;margin-bottom:10px;margin-top:10px;" /> <p style="margin-bottom:10px;">Viets Omni Torn Tool</p>';
-    th.appendChild(imgDivVOTTSettingsDiv);
+    let imgVOTTSettingsDiv = document.createElement("div");
+    imgVOTTSettingsDiv.innerHTML = '<img src="' + VOTTIcon + '" style="max-width:150px;max-height:100px;vertical-align:middle;margin-bottom:10px;margin-top:10px;" />';
+    MenuHeader1.appendChild(imgVOTTSettingsDiv);
 
-    rowHeader.appendChild(th);
+    let MenuHeader2 = document.createElement("th");
+    MenuHeader2.className = "VOTT_SettingsHeader";
 
-    let raw = table.insertRow();
-    cell = raw.insertCell();
+    let TitleVOTTSettingsDiv = document.createElement("div");
+    TitleVOTTSettingsDiv.innerHTML = '<p style="font-size:30px;max-width:600px;max-height:100px;text-align:center;vertical-align: middle;margin-bottom:10px;margin-top:10px;">VIETS OMNI TORN TOOL</p>';
+    TitleVOTTSettingsDiv.style.fontFamily = 'Black Ops One';
+    console.log("Font family: " + TitleVOTTSettingsDiv.style.fontFamily);
+    MenuHeader2.appendChild(TitleVOTTSettingsDiv);
+
+    rowHeader.appendChild(MenuHeader1);
+    rowHeader.appendChild(MenuHeader2);
+
+    let row = table.insertRow();
+    cell = row.insertCell();
     cell.className = "VOTT_SettingsCellMenu";
     cell.appendChild(VOTTSettingsMenuArea);
 
-    cell = raw.insertCell();
+    cell = row.insertCell();
     cell.className = "VOTT_SettingsCellContent";
     cell.appendChild(VOTTSettingsMenuContent);
 
     VOTTSettingsDiv.appendChild(table);
-    node.appendChild(VOTTSettingsDiv);
+    Selector.appendChild(VOTTSettingsDiv);
 
     BuildOptionsInMenu_General(VOTTSettingsMenuArea, VOTTSettingsMenuContent)
     BuildOptionsInMenu_RefillNoti(VOTTSettingsMenuArea, VOTTSettingsMenuContent);
@@ -338,28 +371,46 @@ function BuildOptionsInMenu_General(menuArea, contentArea) {
     let mainAPIKeyInput = document.createElement("input");
     mainAPIKeyInput.value = GetStorageEmptyIfUndefined(VOTT_Storage.PrimaryAPIKey);
 
-    btnValidatemainAPIKey = document.createElement("input");
+    let btnValidatemainAPIKey = document.createElement("input");
     btnValidatemainAPIKey.type = "button";
     btnValidatemainAPIKey.value = "Validate";
     btnValidatemainAPIKey.className = "VOTT_buttonInOptionMenu";
+
+    // get things done after API Key is verified
+    function OnTornAPIKeyVerified(success, reason) {
+        btnValidatemainAPIKey.disabled = false;
+        Set_VOTT_Storage(VOTT_Storage.IsPrimaryAPIKeyValid, success);
+        if (success === true) {
+            successValidatemainAPIKey.style.visibility = "visible";
+            apiRegister.style.display = "none";
+            //FetchUserDataFromBSPServer();
+            ValidateEndText.style.visibility = "hidden";
+        }
+        else {
+            //RefreshOptionMenuWithSubscription();
+            errorValidatemainAPIKey.style.visibility = "visible";
+            apiRegister.style.display = "block";
+            errorValidatemainAPIKey.innerHTML = reason;
+            ValidateEndText.style.visibility = "visible";
+        }
+    }
 
     btnValidatemainAPIKey.addEventListener("click", () => {
         errorValidatemainAPIKey.style.visibility = "hidden";
         successValidatemainAPIKey.style.visibility = "hidden";
         btnValidatemainAPIKey.disabled = true;
-        Set_VOTT_Storage(StorageKey.PrimaryAPIKey, mainAPIKeyInput.value);
+        Set_VOTT_Storage(VOTT_Storage.PrimaryAPIKey, mainAPIKeyInput.value);
+        console.log("API Key changed to " + mainAPIKeyInput.value + "and" + Get_VOTT_Storage(VOTT_Storage.PrimaryAPIKey));
         VerifyTornAPIKey(OnTornAPIKeyVerified);
     });
 
-    
-
-    successValidatemainAPIKey = document.createElement("label");
+    let successValidatemainAPIKey = document.createElement("label");
     successValidatemainAPIKey.innerHTML = 'API Key verified and saved!';
     successValidatemainAPIKey.style.color = 'green';
     successValidatemainAPIKey.style.visibility = "hidden";
 
-    errorValidatemainAPIKey = document.createElement("label");
-    errorValidatemainAPIKey.innerHTML = 'Error while verifying API Key';
+    let errorValidatemainAPIKey = document.createElement("label");
+    errorValidatemainAPIKey.innerHTML = 'Invalid API Key';
     errorValidatemainAPIKey.style.backgroundColor = 'red';
     errorValidatemainAPIKey.style.visibility = "hidden";
 
@@ -372,10 +423,22 @@ function BuildOptionsInMenu_General(menuArea, contentArea) {
     mainAPIKeyDiv.appendChild(errorValidatemainAPIKey);
     contentDiv.appendChild(mainAPIKeyDiv);
 
-    apiRegister = document.createElement("div");
+    let apiRegister = document.createElement("div");
     apiRegister.className = "VOTT_optionsTabContentDiv";
-    apiRegister.innerHTML = '<a href="" target="_blank"><input type"button" class="VOTT_buttonInOptionMenu" value="Generate a basic key"/></a>';
+    apiRegister.innerHTML = '<a href="" target="_blank"><input type"button" class="VOTT_buttonInOptionMenu" title="" value="Generate a limited key"/></a>';
     contentDiv.appendChild(apiRegister);
+
+    let apiRegisterTitle = document.createElement("div");
+    apiRegisterTitle.className = "VOTT_optionsTabContentDiv";
+    apiRegisterTitle.innerHTML = '<div style="color:black">This will create a limited API key with only the permission needed for this script. </div>';
+    //apiRegisterTitle.style.visibility = "hidden";
+    contentDiv.appendChild(apiRegisterTitle);
+
+    // Validation info
+    ValidateEndText = document.createElement("div");
+    ValidateEndText.className = "VOTT_optionsTabContentDiv";
+    ValidateEndText.innerHTML = '<div style="color:black">Please fill a valid API Key, and press on validate to activate VOTT</div>';
+    contentDiv.appendChild(ValidateEndText);
 }
 
 //create content for 'Script 1' tab
@@ -485,6 +548,7 @@ function VerifyTornAPIKey(callback) {
         method: "GET",
         url: urlToUse,
         onload: (r) => {
+            //console.log(r.responseText);
             let j = JSONparse(r.responseText);
             if (!j) {
                 callback(false, "Couldn't check (unexpected response)");
@@ -501,7 +565,7 @@ function VerifyTornAPIKey(callback) {
                 return;
             }
             else {
-                SetStorage(StorageKey.PlayerId, j.player_id);
+                Set_VOTT_Storage(VOTT_Storage.PlayerId, j.player_id);
                 callback(true);
                 return;
             }
@@ -512,32 +576,13 @@ function VerifyTornAPIKey(callback) {
     })
 }
 
-
-// get things done after API Key is verified
-function OnTornAPIKeyVerified(success, reason) {
-    btnValidatemainAPIKey.disabled = false;
-    Set_VOTT_Storage(VOTT_Storage.IsPrimaryAPIKeyValid, success);
-    if (success === true) {
-        successValidatemainAPIKey.style.visibility = "visible";
-        apiRegister.style.display = "none";
-        //FetchUserDataFromBSPServer();
-    }
-    else {
-        //RefreshOptionMenuWithSubscription();
-        errorValidatemainAPIKey.style.visibility = "visible";
-        apiRegister.style.display = "block";
-        errorValidatemainAPIKey.innerHTML = reason;
-        subscriptionEndText.innerHTML = '<div style="color:red">Please fill a valid API Key, and press on validate activate VOTT</div>';
-    }
-}
-
 // #endregion
 
 (function () {
     'use strict';
     window.addEventListener('load', async function () {
-        BuildSettingsMenu(document.querySelector(".content-title"))
+        SettingsMenu(document.querySelector(".content-title"))
         if (IsPage(PageType.Profile))
-        InjectOptionMenuButtonInProfile(document.querySelector(".content-title"))
+            SettingsMenuButton_Profile(document.querySelector(".content-title"))
     });
 })();
