@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [V.O.T.T] Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.0.10
+// @version      1.1.1
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -16,7 +16,8 @@
 (async function () {
     'use strict';
 
-    var addictionThreshold = -9; /// Change the addiction threshold here ///
+    var addtionYellowThreshold = -8; /// Change the addiction threshold here ///
+    var addictionRedThreshold = -10; /// Change the addiction threshold here ///
     var controls = {}; // Initialize an empty dictionary to store control elements
     // Function to check the API key
     async function checkApiKey(apiKey) {
@@ -36,13 +37,41 @@
     // Change the addiction threshold here
     // Change the text here
 
-    function copyTextAndOpenPage(name, employeeId, addiction) {
+    function copyTextAndOpenPage_addition(name, employeeId, addiction) {
         let copyText;
-        if (addiction < addictionThreshold) {
+        if (addiction < addictionRedThreshold) {
             copyText = `Good day my friend ${name}, your addict is ${addiction} which is high, time to go to rehab!`; /// Change the text here ///
         } else {
             copyText = ``;
         }
+
+        // Copy text to clipboard
+        copyToClipboard(copyText);
+
+        // Display an alert
+        alert(`Text copied to clipboard! :)`);
+        //alert(`Text "${copyText}" copied to clipboard! Opening new page to compose message.`);
+        if (confirm("Do you want to open mail to this employee?")) {
+            // Open new page
+            const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
+            window.open(composeUrl, '_blank');
+        } else {
+            // Code to cancel the deletion
+        }
+    }
+
+    function copyTextAndOpenPage_relative(name, employeeId, relative) {
+        let copyText;
+        const relativeDate = parseInt(relative.split(" ")[0]); // Extract the numerical value from the relative string
+        const relativeTime = relative.split(" ")[1]; // Extract the time unit from the relative string
+        if (relativeTime === 'days') {
+            if (!isNaN(relativeDate) && relativeDate > 2) {
+                copyText = `Good day my friend ${name}, your last action is ${relative} which is not good for company performance. \nPlease help to maintain your online at least once a day. Your online is important to the company.`; /// Change the text here ///
+            } else {
+                copyText = ``;
+            }
+        }
+
         // Copy text to clipboard
         copyToClipboard(copyText);
 
@@ -210,26 +239,62 @@
                 copyLink.href = '#';
                 copyLink.textContent = name;
 
+                /*
+
                 // Add a click event listener to copy the text and open a new page
                 copyLink.addEventListener('click', (event) => {
                     event.preventDefault();
-                    copyTextAndOpenPage(name, employeeId, addiction);
+                    copyTextAndOpenPage_addition(name, employeeId, addiction);
                 });
 
                 // Check if addiction value is below the threshold, and change the name color accordingly
-                if (addiction < addictionThreshold) {
+                if (addiction < addictionRedThreshold) {
                     copyLink.style.color = 'red';
                 }
 
+                */
+
                 // Create a span element for the addiction value
                 const addictionSpan = document.createElement('span');
+                addictionSpan.style.cursor = 'pointer';
                 addictionSpan.style.display = 'inline-block'; // Display as inline-block to be on the same line as the link
                 addictionSpan.textContent = `Addiction: ${addiction}`;
 
+                // Add a click event listener to copy the text and open a new page
+                addictionSpan.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    copyTextAndOpenPage_addition(name, employeeId, addiction);
+                });
+
+                // Check if addiction value is below the threshold, and change the name color accordingly
+                if (addiction < addtionYellowThreshold && addiction > addictionRedThreshold) {
+                    addictionSpan.style.color = 'yellow';
+                } else if (addiction < addictionRedThreshold) {
+                    addictionSpan.style.color = 'red';
+                }
+
                 // Create a span element for the relative value
                 const relativeSpan = document.createElement('span');
+                relativeSpan.style.cursor = 'pointer';
                 relativeSpan.style.display = 'block'; // Display as block to move to the next line
                 relativeSpan.textContent = `Last action: ${relative}`;
+
+                // Add a click event listener to copy the text and open a new page
+                relativeSpan.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    copyTextAndOpenPage_relative(name, employeeId, relative);
+                });
+
+                // Check if ralative value is at the threshold, and change the name color accordingly
+                const relativeDate = parseInt(relative.split(" ")[0]); // Extract the numerical value from the relative string
+                const relativeTime = relative.split(" ")[1]; // Extract the time unit from the relative string
+                if (relativeTime === 'days') {
+                    if (!isNaN(relativeDate) && relativeDate === 2) {
+                        relativeSpan.style.color = 'yellow'; // Color in yellow for values over 2 days ago
+                    } else if (!isNaN(relativeDate) && relativeDate > 2) {
+                        relativeSpan.style.color = 'red'; // Color in red for values over 3 days ago
+                    }
+                }
 
                 // Append the link and spans to the row
                 row.appendChild(copyLink);
