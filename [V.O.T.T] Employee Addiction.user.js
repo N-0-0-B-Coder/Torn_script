@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [V.O.T.T] Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.2.0
+// @version      1.2.4
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -15,9 +15,19 @@
 
 (async function () {
     'use strict';
+    //////////////////////////////////// USER SETTINGS - CUSTOMIZE HERE /////////////////////////////////////
 
-    var addtionYellowThreshold = -8; /// Change the addiction threshold here ///
-    var addictionRedThreshold = -10; /// Change the addiction threshold here ///
+    /// Change the addiction caution threshold below - This will apply YELLOW when employee addiction come over this ///
+    var addictionCautionThreshold = -8; 
+
+    /// Change the addiction danger threshold below - This will apply RED when employee addiction come over this ///
+    var addictionDangerThreshold = -10;
+    
+    /// (unit: DAY) Change the last action threshold below - This will apply YELLOW and RED when user last action is equal and over, respectively  ///
+    var lastActionThreshold = 2;
+
+    //////////////////////////////////// USER SETTINGS - CUSTOMIZE HERE /////////////////////////////////////
+
     var controls = {}; // Initialize an empty dictionary to store control elements
     // Function to check the API key
     async function checkApiKey(apiKey) {
@@ -39,7 +49,7 @@
 
     function copyTextAndOpenPage_addition(name, employeeId, addiction) {
         let copyText;
-        if (addiction < addictionRedThreshold) {
+        if (addiction < addictionDangerThreshold) {
             copyText = `Good day my friend ${name}, your addict is ${addiction} which is high, time to go to rehab!`; /// Change the text here ///
         } else {
             copyText = ``;
@@ -55,7 +65,7 @@
             // Open new page
             const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
             window.open(composeUrl, '_blank');
-            inputText(copyText);
+            //inputText(copyText);
         } else {
             // Code to cancel the deletion
         }
@@ -66,7 +76,7 @@
         const relativeDate = parseInt(relative.split(" ")[0]); // Extract the numerical value from the relative string
         const relativeTime = relative.split(" ")[1]; // Extract the time unit from the relative string
         if (relativeTime === 'days') {
-            if (!isNaN(relativeDate) && relativeDate > 2) {
+            if (!isNaN(relativeDate) && relativeDate > lastActionThreshold) {
                 copyText = `Good day my friend ${name}, your last action is ${relative} which is not good for company performance. \nPlease help to maintain your online at least once a day. Your online is important to the company.`; /// Change the text here ///
             } else {
                 copyText = ``;
@@ -83,23 +93,22 @@
             // Open new page
             const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
             window.open(composeUrl, '_blank');
-            inputText(copyText);
+            //inputText(copyText);
         } else {
             // Code to cancel the deletion
         }
     }
 
-    function inputText(text) {
-        // Use setTimeout to ensure the pop-up page has fully loaded
-        setTimeout(() => {
-            let inputText = window.opener.document.querySelector('#tinymce.mce-content-body p');
-            if (inputText) {
-                // Set the text content of the <p> element to the copied message
-                inputText.textContent = text;
-            } else {
-                console.error('Could not find <p> element within mce-content-body in the pop-up page.');
-            }
-        }, 1000); // Adjust the delay if needed
+    // Function to input text to the mail page
+    function inputText(Text, employeeId) {
+        const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
+        const newWin = window.open(composeUrl, '_blank');
+        var newDocument = newWin.document;
+        window.addEventListener('load', async function () {
+            newDocument.querySelector('#tinymce.mce-content-body').innerHTML = Text;
+        });
+        
+        
     }
 
     // Function to copy text to clipboard
@@ -263,7 +272,7 @@
                 });
 
                 // Check if addiction value is below the threshold, and change the name color accordingly
-                if (addiction < addictionRedThreshold) {
+                if (addiction < addictionDangerThreshold) {
                     copyLink.style.color = 'red';
                 }
 
@@ -282,9 +291,9 @@
                 });
 
                 // Check if addiction value is below the threshold, and change the name color accordingly
-                if (addiction < addtionYellowThreshold && addiction > addictionRedThreshold) {
-                    addictionSpan.style.color = '#c66231'; // Nerve color for values over threshold
-                } else if (addiction < addictionRedThreshold) {
+                if (addiction < addictionCautionThreshold && addiction > addictionDangerThreshold) {
+                    addictionSpan.style.color = '#d4d400'; // Nerve color for values over threshold
+                } else if (addiction < addictionDangerThreshold) {
                     addictionSpan.style.color = 'red'; // Color in red for values over threshold
                 }
 
@@ -304,9 +313,9 @@
                 const relativeDate = parseInt(relative.split(" ")[0]); // Extract the numerical value from the relative string
                 const relativeTime = relative.split(" ")[1]; // Extract the time unit from the relative string
                 if (relativeTime === 'days') {
-                    if (!isNaN(relativeDate) && relativeDate === 2) {
-                        relativeSpan.style.color = '#c66231'; // Nerve color for values over 2 days ago
-                    } else if (!isNaN(relativeDate) && relativeDate > 2) {
+                    if (!isNaN(relativeDate) && relativeDate === lastActionThreshold) {
+                        relativeSpan.style.color = '#d4d400'; // Nerve color for values over 2 days ago
+                    } else if (!isNaN(relativeDate) && relativeDate > lastActionThreshold) {
                         relativeSpan.style.color = 'red'; // Color in red for values over 3 days ago
                     }
                 }
