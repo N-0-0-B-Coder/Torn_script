@@ -82,7 +82,8 @@ styleToAdd.innerHTML += '.VOTT_SettingsCellMenu {width:100px; background:white; 
 
 styleToAdd.innerHTML += '.VOTT_SettingsHeader {text-align: center; font-size: 18px !important; background: black; color: white;}';
 
-styleToAdd.innerHTML += '@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap");';
+styleToAdd.rel = 'stylesheet';
+styleToAdd.href = "https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap";
 
 /* Buttons in Option menu content */
 styleToAdd.innerHTML += '.VOTT_buttonInOptionMenu { background-color: black; border-radius: 4px; border-style: none; box-sizing: border-box; color: #fff;cursor: pointer;display: inline-block; font-family: "Farfetch Basis", "Helvetica Neue", Arial, sans-serif;';
@@ -112,10 +113,11 @@ styleToAdd.innerHTML += 'text-transform: none;  user-select: none; -webkit-user-
 styleToAdd.innerHTML += '.VOTT_button: hover, .VOTT_button:focus { opacity: .75;}'
 
 // Get the first script tag
-//var ref = document.querySelector('script');
+var ref = document.querySelector('script');
 
 // Insert our new styles before the first script tag
-document.head.appendChild(styleToAdd);
+ref.parentNode.insertBefore(styleToAdd, ref);
+//document.head.appendChild(styleToAdd);
 
 // #endregion
 
@@ -253,6 +255,7 @@ function SettingsMenu(Selector) {
 
     let MenuHeader2 = document.createElement("th");
     MenuHeader2.className = "VOTT_SettingsHeader";
+    MenuHeader2.style.fontFamily = 'Black Ops One';
 
     let TitleVOTTSettingsDiv = document.createElement("div");
     TitleVOTTSettingsDiv.innerHTML = '<p style="font-size:30px;max-width:600px;max-height:100px;text-align:center;vertical-align: middle;margin-bottom:10px;margin-top:10px;">VIETS OMNI TORN TOOL</p>';
@@ -306,12 +309,10 @@ function OpenOptionsTab(evt, optionsTabName) {
 }
 
 // Build List Options of Menu and its content
-function BuildOptionsInMenu(menuArea, contentArea, name, shouldBeHiddenWhenInactive, isOpenAtStart = false) {
+function BuildOptionsInMenu(menuArea, contentArea, name, isOpenAtStart = false) {
     // Adding the button in the tabs
     let TabEntryBtn = document.createElement("button");
     TabEntryBtn.className = "VOTT_tablinks";
-    if (shouldBeHiddenWhenInactive == true)
-        TabEntryBtn.className += " VOTT_tablinksShouldBeHiddenWhenInactive";
 
     if (isOpenAtStart)
         TabEntryBtn.id = "VOTT_tablinks_defaultOpen";
@@ -362,7 +363,7 @@ function AddOptionCheckBox(contentDiv, StorageKeyValue, defaultValue, textToDisp
 
 // Create content for 'General' tab
 function BuildOptionsInMenu_General(menuArea, contentArea) {
-    let contentDiv = BuildOptionsInMenu(menuArea, contentArea, "General", false, true);
+    let contentDiv = BuildOptionsInMenu(menuArea, contentArea, "General", true);
 
     // API Key
     let mainAPIKeyLabel = document.createElement("label");
@@ -382,7 +383,9 @@ function BuildOptionsInMenu_General(menuArea, contentArea) {
         Set_VOTT_Storage(VOTT_Storage.IsPrimaryAPIKeyValid, success);
         if (success === true) {
             successValidatemainAPIKey.style.visibility = "visible";
+            successValidatemainAPIKey.style.display = "block";
             apiRegister.style.display = "none";
+            apiRegisterTitle.style.display = "none";
             //FetchUserDataFromBSPServer();
             ValidateEndText.style.visibility = "hidden";
         }
@@ -390,8 +393,10 @@ function BuildOptionsInMenu_General(menuArea, contentArea) {
             //RefreshOptionMenuWithSubscription();
             errorValidatemainAPIKey.style.visibility = "visible";
             apiRegister.style.display = "block";
+            apiRegisterTitle.style.display = "block";
             errorValidatemainAPIKey.innerHTML = reason;
             ValidateEndText.style.visibility = "visible";
+            successValidatemainAPIKey.style.display = "none";
         }
     }
 
@@ -405,7 +410,7 @@ function BuildOptionsInMenu_General(menuArea, contentArea) {
     });
 
     let successValidatemainAPIKey = document.createElement("label");
-    successValidatemainAPIKey.innerHTML = 'API Key verified and saved!';
+    successValidatemainAPIKey.innerHTML = 'API Key verified! This key will be saved in your script settings.';
     successValidatemainAPIKey.style.color = 'green';
     successValidatemainAPIKey.style.visibility = "hidden";
 
@@ -443,7 +448,7 @@ function BuildOptionsInMenu_General(menuArea, contentArea) {
 
 //create content for 'Script 1' tab
 function BuildOptionsInMenu_RefillNoti(menuArea, contentArea) {
-    let contentDiv = BuildOptionsInMenu(menuArea, contentArea, "Refill Notification", false);
+    let contentDiv = BuildOptionsInMenu(menuArea, contentArea, "Refill Notification");
 
     AddOptionCheckBox(contentDiv, VOTT_Storage.Script1_Enabled, false, "Enable Script?", "Sciprt_1_enabled");
 
@@ -480,7 +485,7 @@ function BuildOptionsInMenu_RefillNoti(menuArea, contentArea) {
 
 //create content for 'Script 2' tab
 function BuildOptionsInMenu_CompAddiction(menuArea, contentArea) {
-    let contentDiv = BuildOptionsInMenu(menuArea, contentArea, "Company Addiction", false);
+    let contentDiv = BuildOptionsInMenu(menuArea, contentArea, "Company Addiction");
 
     let TabContent_Content = document.createElement("div");
     TabContent_Content.className = "VOTT_optionsTabContentDiv";
@@ -510,7 +515,7 @@ function BuildOptionsInMenu_CompAddiction(menuArea, contentArea) {
 
 //create content for 'Script 3' tab
 function BuildOptionsInMenu_SearchQuickAttack(menuArea, contentArea) {
-    let contentDiv = BuildOptionsInMenu(menuArea, contentArea, "Search-Quick Attack", false);
+    let contentDiv = BuildOptionsInMenu(menuArea, contentArea, "Search-Quick Attack");
 
     let TabContent_Content = document.createElement("div");
     TabContent_Content.className = "VOTT_optionsTabContentDiv";
