@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [V.O.T.T] Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.1.1
+// @version      1.1.2
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -49,9 +49,9 @@
         copyToClipboard(copyText);
 
         // Display an alert
-        alert(`Text copied to clipboard! :)`);
+        alert(`Employee Addiction Text Content copied to clipboard! :)`);
         //alert(`Text "${copyText}" copied to clipboard! Opening new page to compose message.`);
-        if (confirm("Do you want to open mail to this employee?")) {
+        if (confirm("Do you want to open mail to this employee for pasting the copied text?")) {
             // Open new page
             const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
             window.open(composeUrl, '_blank');
@@ -76,9 +76,9 @@
         copyToClipboard(copyText);
 
         // Display an alert
-        alert(`Text copied to clipboard! :)`);
+        alert(`Employee Last Action Text Content copied to clipboard! :)`);
         //alert(`Text "${copyText}" copied to clipboard! Opening new page to compose message.`);
-        if (confirm("Do you want to open mail to this employee?")) {
+        if (confirm("Do you want to open mail to this employee for pasting the copied text?")) {
             // Open new page
             const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
             window.open(composeUrl, '_blank');
