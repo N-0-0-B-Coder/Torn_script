@@ -1,13 +1,14 @@
 // ==UserScript==
 // @name         [V.O.T.T] Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.2.6
+// @version      1.2.7
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*php*
 // @exclude      https://www.torn.com/preferences*
+// @exclude      https://www.torn.com/loader.php?sid=attack&user2ID=*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // @grant        GM_setValue
 // @grant        GM_getValue

@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         [V.O.T.T] Refill Notification
 // @namespace    http://tampermonkey.net/
-// @version      0.15
+// @version      0.17
 // @description  Notify user about daily refills with dots under user points
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*php*
+// @exclude      https://www.torn.com/loader.php?sid=attack&user2ID=*
 // @exclude      https://www.torn.com/preferences*
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Refill%20notification.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Refill%20notification.user.js
