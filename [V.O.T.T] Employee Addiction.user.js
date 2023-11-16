@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [V.O.T.T] Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.2.4
+// @version      1.2.5
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -22,7 +22,7 @@
 
     /// Change the addiction danger threshold below - This will apply RED when employee addiction come over this ///
     var addictionDangerThreshold = -10;
-    
+
     /// (unit: DAY) Change the last action threshold below - This will apply YELLOW and RED when user last action is equal and over, respectively  ///
     var lastActionThreshold = 2;
 
