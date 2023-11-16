@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [V.O.T.T] Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.2.5
+// @version      1.2.6
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -18,7 +18,7 @@
     //////////////////////////////////// USER SETTINGS - CUSTOMIZE HERE /////////////////////////////////////
 
     /// Change the addiction caution threshold below - This will apply YELLOW when employee addiction come over this ///
-    var addictionCautionThreshold = -8; 
+    var addictionCautionThreshold = -8;
 
     /// Change the addiction danger threshold below - This will apply RED when employee addiction come over this ///
     var addictionDangerThreshold = -10;
@@ -29,23 +29,9 @@
     //////////////////////////////////// USER SETTINGS - CUSTOMIZE HERE /////////////////////////////////////
 
     var controls = {}; // Initialize an empty dictionary to store control elements
-    // Function to check the API key
-    async function checkApiKey(apiKey) {
-        const apiUrl = `https://api.torn.com/company/?selections=employees&key=${apiKey}`;
 
-        const response = await fetch(apiUrl);
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error.error);
-        }
-
-        return response.json();
-    }
-
-    // Function to copy text to clipboard and open a new page
-    // Change the addiction threshold here
-    // Change the text here
+    // #region Copy text and open mail page
 
     function copyTextAndOpenPage_addition(name, employeeId, addiction) {
         let copyText;
@@ -107,8 +93,8 @@
         newDocument.addEventListener('load', async function () {
             newDocument.querySelector('#tinymce.mce-content-body').innerHTML = Text;
         });
-        
-        
+
+
     }
 
     // Function to copy text to clipboard
@@ -120,6 +106,10 @@
         document.execCommand('copy');
         document.body.removeChild(textarea);
     }
+
+    // #endregion
+
+    // #region Collapse Settings
 
     // Function to save collapse/uncollapse state
     function saveCollapseState() {
@@ -145,11 +135,30 @@
         }
     }
 
+    // #endregion
+
+    // #region API Key Validation
+
+    // Function to check the API key
+    async function checkApiKey(apiKey) {
+        const apiUrl = `https://api.torn.com/company/?selections=employees&key=${apiKey}`;
+
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error.error);
+        }
+
+        return response.json();
+    }
+
     // Check if the API key is stored
     if (!storedApiKey || storedApiKey === 'null') {
         askforapikey();
     }
-    //check the API key everytime the website is loaded
+
+    // Check the API key everytime the website is loaded
     if (storedApiKey !== 'null') {
         try {
             const checkapi = await checkApiKey(storedApiKey);
@@ -171,7 +180,13 @@
             }
         }
     }
+
+    // #endregion
+
     getCollapseState();
+
+    // #region Main Script
+
     // Fetch data using the validated API key
     if (storedApiKey !== 'null') {
         try {
@@ -347,4 +362,7 @@
         // Clear stored API key so that the prompt is shown again on the next visit
         GM_setValue('apiKey', 'null');
     }
+
+    // #endregion
+
 })();
