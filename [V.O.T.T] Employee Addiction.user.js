@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [V.O.T.T] Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.1.3
+// @version      1.2.0
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -55,7 +55,7 @@
             // Open new page
             const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
             window.open(composeUrl, '_blank');
-            //inputText(copyText);
+            inputText(copyText);
         } else {
             // Code to cancel the deletion
         }
@@ -83,20 +83,24 @@
             // Open new page
             const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
             window.open(composeUrl, '_blank');
-            //inputText(copyText);
+            inputText(copyText);
         } else {
             // Code to cancel the deletion
         }
     }
 
-    /*
-    function inputText(Text) {
-        window.addEventListener('load', async function () {
-            let InputText = document.querySelector('#tinymce.mce-content-body');
-            InputText.innerHTML = Text;
-        });
+    function inputText(text) {
+        // Use setTimeout to ensure the pop-up page has fully loaded
+        setTimeout(() => {
+            let inputText = window.opener.document.querySelector('#tinymce.mce-content-body p');
+            if (inputText) {
+                // Set the text content of the <p> element to the copied message
+                inputText.textContent = text;
+            } else {
+                console.error('Could not find <p> element within mce-content-body in the pop-up page.');
+            }
+        }, 1000); // Adjust the delay if needed
     }
-    */
 
     // Function to copy text to clipboard
     function copyToClipboard(text) {
@@ -279,9 +283,9 @@
 
                 // Check if addiction value is below the threshold, and change the name color accordingly
                 if (addiction < addtionYellowThreshold && addiction > addictionRedThreshold) {
-                    addictionSpan.style.color = '#c66231';
+                    addictionSpan.style.color = '#c66231'; // Nerve color for values over threshold
                 } else if (addiction < addictionRedThreshold) {
-                    addictionSpan.style.color = 'red';
+                    addictionSpan.style.color = 'red'; // Color in red for values over threshold
                 }
 
                 // Create a span element for the relative value
@@ -301,7 +305,7 @@
                 const relativeTime = relative.split(" ")[1]; // Extract the time unit from the relative string
                 if (relativeTime === 'days') {
                     if (!isNaN(relativeDate) && relativeDate === 2) {
-                        relativeSpan.style.color = '#c66231'; // Color in yellow for values over 2 days ago
+                        relativeSpan.style.color = '#c66231'; // Nerve color for values over 2 days ago
                     } else if (!isNaN(relativeDate) && relativeDate > 2) {
                         relativeSpan.style.color = 'red'; // Color in red for values over 3 days ago
                     }
