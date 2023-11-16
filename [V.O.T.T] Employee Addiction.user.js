@@ -104,7 +104,7 @@
         const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
         const newWin = window.open(composeUrl, '_blank');
         var newDocument = newWin.document;
-        window.addEventListener('load', async function () {
+        newDocument.addEventListener('load', async function () {
             newDocument.querySelector('#tinymce.mce-content-body').innerHTML = Text;
         });
         
