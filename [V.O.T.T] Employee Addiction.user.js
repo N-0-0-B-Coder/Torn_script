@@ -268,7 +268,7 @@
 
                 // Check if addiction value is below the threshold, and change the name color accordingly
                 if (addiction < addtionYellowThreshold && addiction > addictionRedThreshold) {
-                    addictionSpan.style.color = 'yellow';
+                    addictionSpan.style.color = '#c66231';
                 } else if (addiction < addictionRedThreshold) {
                     addictionSpan.style.color = 'red';
                 }
@@ -290,7 +290,7 @@
                 const relativeTime = relative.split(" ")[1]; // Extract the time unit from the relative string
                 if (relativeTime === 'days') {
                     if (!isNaN(relativeDate) && relativeDate === 2) {
-                        relativeSpan.style.color = 'yellow'; // Color in yellow for values over 2 days ago
+                        relativeSpan.style.color = '#c66231'; // Color in yellow for values over 2 days ago
                     } else if (!isNaN(relativeDate) && relativeDate > 2) {
                         relativeSpan.style.color = 'red'; // Color in red for values over 3 days ago
                     }
