@@ -55,6 +55,7 @@
             // Open new page
             const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
             window.open(composeUrl, '_blank');
+            //inputText(copyText);
         } else {
             // Code to cancel the deletion
         }
@@ -82,10 +83,20 @@
             // Open new page
             const composeUrl = `https://www.torn.com/messages.php#/p=compose&XID=${employeeId}`;
             window.open(composeUrl, '_blank');
+            //inputText(copyText);
         } else {
             // Code to cancel the deletion
         }
     }
+
+    /*
+    function inputText(Text) {
+        window.addEventListener('load', async function () {
+            let InputText = document.querySelector('#tinymce.mce-content-body');
+            InputText.innerHTML = Text;
+        });
+    }
+    */
 
     // Function to copy text to clipboard
     function copyToClipboard(text) {
