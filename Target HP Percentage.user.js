@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Target HP Percentage
+// @name         [V.O.T.T] Target HP Percentage
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  Add percentage in target HP for Execute Bonus Weapon
