@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [V.O.T.T] Refill Notification
 // @namespace    http://tampermonkey.net/
-// @version      0.17
+// @version      1.0
 // @description  Notify user about daily refills with dots under user points
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*php*
