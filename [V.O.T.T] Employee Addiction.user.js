@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [V.O.T.T] Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.2.7
+// @version      1.2.9
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -167,6 +167,9 @@
                 if (checkapi.error.code === 2 || checkapi.error.code === 16) {
                     alert(`Error. Please enter a valid limited Torn API key.`);
                     askforapikey();
+                    return; // Terminate the script to prevent further execution
+                } else if (checkapi.error.code === 6 || checkapi.error.code === 7) {
+                    console.error(`[Employee Addiction] Error: ${checkapi.error.error}. \nAre you jobless or in TornJob? Script will not run.`);
                     return; // Terminate the script to prevent further execution
                 }
             }
