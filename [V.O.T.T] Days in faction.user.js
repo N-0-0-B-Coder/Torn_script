@@ -1,18 +1,32 @@
 // ==UserScript==
 // @name         [V.O.T.T] Days in faction
 // @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  Add info of days in faction in profile page
+// @version      1.0
+// @description  Add days in faction next to faction info in profile page
 // @author       DaoChauNghia[3029549]
-// @match        https://www.torn.com/profiles.php?XID=2884626
+// @match        https://www.torn.com/profiles.php?XID=*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
-// @grant        none
+// @grant        GM_setValue
+// @grant        GM_getValue
 // ==/UserScript==
 
 (async function () {
     'use strict';
 
     // #region API Key Validation
+
+    // Function ask the user for the API key
+    var storedApiKey = GM_getValue('apiKey');
+    function askforapikey() {
+        storedApiKey = prompt('Please enter your Torn API key (or click "Cancel" to skip):') || 'null';
+        if (storedApiKey !== 'null') {
+            GM_setValue('apiKey', storedApiKey);
+            location.reload();
+        } else {
+            alert('You have chosen not to provide an API key. The script will not run.');
+            GM_setValue('apiKey', storedApiKey);
+        }
+    }
 
     // Function to check the API key
     async function checkApiKey(apiKey) {
@@ -68,8 +82,25 @@
         try {
             const data = await checkApiKey(storedApiKey);
 
-            // Get the number of days in faction
-            
+            // Code goes here ...
+            const DayInFaction = data.faction.days_in_faction;
+
+            let profileRoot = document.querySelector('.core-layout__viewport > .user-profile');
+            let ProfileWrapper = profileRoot.getElementsByClassName('profile-wrapper')[2]; // get the third element
+            let BasicInfo = ProfileWrapper.getElementsByClassName('info-table')[0];
+            let UserInfo = BasicInfo.childNodes[2];
+            let UserInfoTable = UserInfo.childNodes[1];
+             
+            let DaysInFaction = document.createElement('span');
+            if (DaysInFaction === 0 || DaysInFaction === 1) {
+            DaysInFaction.innerHTML = "(" + DayInFaction + " day)";
+            } else {
+            DaysInFaction.innerHTML = "(" + DayInFaction + " days)";
+            }
+            DaysInFaction.style.marginLeft = "5px";
+            UserInfoTable.appendChild(DaysInFaction);
+
+
 
         } catch (error) {
             console.error('Error fetching data:', error.message);

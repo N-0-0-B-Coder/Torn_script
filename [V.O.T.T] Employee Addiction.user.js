@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         [V.O.T.T] Employee Addiction
 // @namespace    http://tampermonkey.net/
-// @version      1.2.9
+// @version      1.2.10
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Employee%20Addiction.user.js
 // @description  Display employee addiction values and message them with text when click on name
@@ -123,6 +123,10 @@
         controls.boxMinimized = storedControls.boxMinimized || false;
     }
 
+    // #endregion
+
+    // #region API Key Validation
+
     // Function ask the user for the API key
     var storedApiKey = GM_getValue('apiKey');
     function askforapikey() {
@@ -135,10 +139,6 @@
             GM_setValue('apiKey', storedApiKey);
         }
     }
-
-    // #endregion
-
-    // #region API Key Validation
 
     // Function to check the API key
     async function checkApiKey(apiKey) {
