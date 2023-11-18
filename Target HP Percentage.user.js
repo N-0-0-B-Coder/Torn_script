@@ -7,7 +7,6 @@
 // @match        https://www.torn.com/loader.php?sid=attack&user2ID=*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // @grant        none
-// @run-at       document-end
 // ==/UserScript==
 
 (function () {
@@ -15,90 +14,82 @@
 
     var defenderElement;
     var isObserverDisconnected = false;
+    var percentageElement;
+
+    // Options for the observer (which mutations to observe)
+    let config = { attributes: true, childList: true, subtree: true, characterData: true };
 
     // Create a MutationObserver to observe changes to the document
     let observer = new MutationObserver((mutationsList, observer) => {
         for (let mutation of mutationsList) {
             if (mutation.type === 'childList' && !isObserverDisconnected) {
                 // Select the "defender" element with the specified id and class name
-                defenderElement = document.querySelector('#defender.player___BogMt');
+                defenderElement = document.querySelector('#defender.player___BogMt .header___gISeK .topWrap___mZum5 .textEntries___bbjd5 .entry___m0IK_:nth-child(3)');
 
                 if (defenderElement) {
                     // The element exists, so stop observing
                     observer.disconnect();
                     isObserverDisconnected = true;
-                    console.log('defenderElement found, observer disconnected');
+
                     console.log('defenderElement: ', defenderElement);
+
+                    // Start observing the new healthValueElement
+                    observeHealthValueElement();
+
                     targetHP();
                 }
 
                 // If defenderElement is not found, try again with an alternative selector
-                if (!defenderElement && !isObserverDisconnected) {
+                if (!defenderElement) {
                     console.error('defenderElement not found, trying again');
                 }
             }
         }
     });
 
-    // Options for the observer (which mutations to observe)
-    let config = { childList: true, subtree: true };
-
     // Start observing the document with the configured mutations
     observer.observe(document, config);
 
     // Function to handle the target HP logic
     function targetHP() {
-        // Select the relevant elements within the defenderElement
-        let targetElement = defenderElement.querySelector('.header___gISeK > .topWrap___mZum5 > .textEntries___bbjd5');
-        if (targetElement) {
-            console.log('targetElement: ', targetElement);
+        if (percentageElement) {
+            percentageElement.remove();
         }
 
-        let thirdEntryElement = targetElement?.getElementsByClassName('entry___m0IK_')[2]; // get the third element
-        if (thirdEntryElement) {
-            console.log('thirdEntryElement: ', thirdEntryElement);
-        }
+        // create percentage element
+        percentageElement = document.createElement('span');
 
-        let healthValueElement = thirdEntryElement?.querySelector('[id*="player-health-value"]'); // get the element with id containing "player-health-value"
-        if (healthValueElement) {
-            console.log('healthValueElement: ', healthValueElement);
-        }
+        // append percentage element to health value element
+        defenderElement.appendChild(percentageElement);
+        updatePercentageDisplay();
 
-        // Check if healthValueElement exists
-        if (healthValueElement) {
-            // create percentage element
-            let percentageElement = document.createElement('span');
+        console.log('defenderElement: ', defenderElement);
+    }
 
-            // Initialize the display with the initial health percentage
-            let values = healthValueElement.innerHTML.split('/');
-            let percentage = (parseInt(values[0]) / parseInt(values[1])) * 100;
-            percentageElement.innerHTML = ' (' + percentage.toFixed(2) + '%)';
+    // Function to observe changes to the healthValueElement
+    function observeHealthValueElement() {
 
-            // append percentage element to health value element
-            healthValueElement.appendChild(percentageElement);
-
-            // Create a MutationObserver instance for the target element
-            let HPobserver = new MutationObserver((mutationsList, observer) => {
-                for (let mutation of mutationsList) {
-                    if (mutation.type === 'childList') {
-                        console.log('A child node has been added or removed.');
-                    } else if (mutation.type === 'attributes' && mutation.attributeName === 'innerHTML') {
-                        console.log('The innerHTML was modified.');
-                        let values = mutation.target.innerHTML.split('/');
-                        let percentage = (parseInt(values[0]) / parseInt(values[1])) * 100;
-                        console.log('Health percentage: ' + percentage.toFixed(2) + '%');
-
-                        // Update the percentage display
-                        percentageElement.innerHTML = ' (' + percentage.toFixed(2) + '%)';
-                    }
+        // Create a MutationObserver instance for the target element
+        let HPobserver = new MutationObserver((mutationsList, observer) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList' || mutation.type === 'attributes') {
+                    console.log('A child node or attribute has been modified.');
+                    updatePercentageDisplay();
                 }
-            });
+            }
+        });
 
-            // Options for the observer (which mutations to observe)
-            let HPconfig = { attributes: true, childList: true, subtree: true };
+        // Options for the observer (which mutations to observe)
+        let HPconfig = { attributes: true, childList: true, subtree: true, characterData: true };
 
-            // Start observing the target element with the configured mutations
-            HPobserver.observe(healthValueElement, HPconfig);
-        }
+        // Start observing the target element with the configured mutations
+        HPobserver.observe(defenderElement, HPconfig);
+    }
+
+    // Function to update the percentage display
+    function updatePercentageDisplay() {
+        let values = defenderElement.childNodes[1].innerHTML.split('/');
+        let percentage = (parseInt(values[0].replace(/,/g, '')) / parseInt(values[1].replace(/,/g, ''))) * 100;
+        percentageElement.innerHTML = ' (' + percentage.toFixed(2) + '%)';
     }
 })();
