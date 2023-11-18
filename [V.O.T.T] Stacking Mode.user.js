@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         [V.O.T.T] Stacking Mode
 // @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  Stacking mode on E-Bar to prevent E using while stacking.
+// @version      1.0
+// @description  Stacking mode on E-Bar to prevent gym while stacking.
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*php*
 // @exclude      https://www.torn.com/loader.php?sid=attack&user2ID=*
@@ -11,8 +11,85 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-(function() {
+(function () {
     'use strict';
 
     // Your code here...
+    var controls = {}; // Initialize an empty dictionary to store controls
+
+    // Function to save switch state
+    function saveStackSwitch() {
+        //localStorage.refillnoti = JSON.stringify(controls);
+        GM_setValue('StackMode', JSON.stringify(controls));
+    }
+
+    // Function to load switch state
+    function loadStackSwitch() {
+        //const storedControls = JSON.parse(localStorage.refillnoti || '{}');
+        //controls.refillswitch = storedControls.refillswitch || false;
+        const storedControls = JSON.parse(GM_getValue('StackMode', '{}'));
+        controls.StackEnabled = storedControls.StackEnabled || false;
+        console.log(controls.StackEnabled);
+    }
+
+    // Function to create switch button
+    function createSwitchButton() {
+        const switchButton = document.createElement('a');
+        if (controls.StackEnabled) {
+            switchButton.textContent = '[stacking enaled]';
+        } else {
+            switchButton.textContent = '[stacking disabled]';
+        }
+        switchButton.className = 't-blue'; // Add "t-blue" class to the button
+        switchButton.style.display = 'flex';
+        switchButton.style.marginLeft = 'auto'; // Add the dots at the right of dots
+        switchButton.style.cursor = 'pointer';
+        switchButton.addEventListener('click', () => {
+            controls.StackEnabled = !controls.StackEnabled;
+
+            if (controls.StackEnabled) {
+                switchButton.textContent = '[stacking enaled]';
+            } else {
+                switchButton.textContent = '[stacking disabled]';
+            }
+            saveStackSwitch();
+        });
+        return switchButton;
+    }
+
+    // Function to add an image element based on GymTable display
+    function addImageBasedOnDisplay(GymTable) {
+        const imageSrc = 'https://i.postimg.cc/BnsZBgqX/not-lazy.png';
+        const imageElement = document.createElement('img');
+        imageElement.src = imageSrc;
+        imageElement.style.width = '100%'; // Adjust the width as needed
+
+        // Check if GymTable display is "none"
+        if (controls.StackEnabled) {
+            imageElement.style.display = 'block'; // Set the display style for the image
+        } else {
+            imageElement.style.display = 'none'; // Set the display style for the image
+        }
+
+        // Insert the image element before the GymTable
+        GymTable.parentNode.insertBefore(imageElement, GymTable);
+    }
+
+    loadStackSwitch();
+
+    // Function to add switch button to the page
+    const EnerBar = document.querySelector('.bar___Bv5Ho').parentNode.insertBefore(createSwitchButton(), document.querySelectorAll('.bar___Bv5Ho')[0]);
+    console.log(EnerBar.parentNode);
+    if (window.location.href.match('https://www.torn.com/gym.php')) {
+        let GymTable = document.querySelector('div#gymroot');
+        console.log(GymTable);
+        addImageBasedOnDisplay(GymTable);
+        if (controls.StackEnabled) {
+            GymTable.style.display = 'none';
+        } else {
+            GymTable.style.display = 'block';
+        }
+    }
+    //EnerBar.parentNode.insertBefore(createSwitchButton(), 'bar___Bv5Ho');
+    //EnerBar.appendChild(switchButton);
 })();
