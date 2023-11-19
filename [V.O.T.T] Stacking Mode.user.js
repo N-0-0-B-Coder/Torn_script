@@ -19,17 +19,13 @@
 
     // Function to save switch state
     function saveStackSwitch() {
-        //localStorage.refillnoti = JSON.stringify(controls);
         GM_setValue('StackMode', JSON.stringify(controls));
     }
 
     // Function to load switch state
     function loadStackSwitch() {
-        //const storedControls = JSON.parse(localStorage.refillnoti || '{}');
-        //controls.refillswitch = storedControls.refillswitch || false;
         const storedControls = JSON.parse(GM_getValue('StackMode', '{}'));
         controls.StackEnabled = storedControls.StackEnabled || false;
-        console.log(controls.StackEnabled);
     }
 
     // Function to create switch button
