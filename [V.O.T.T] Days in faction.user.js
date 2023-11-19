@@ -1,9 +1,11 @@
 // ==UserScript==
 // @name         [V.O.T.T] Days in faction
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Add days in faction next to faction info in profile page
 // @author       DaoChauNghia[3029549]
+// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Days%20in%20faction.user.js
+// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Days%20in%20faction.user.js
 // @match        https://www.torn.com/profiles.php?XID=*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // @grant        GM_setValue
@@ -30,7 +32,9 @@
 
     // Function to check the API key
     async function checkApiKey(apiKey) {
-        const apiUrl = `https://api.torn.com/user/?selections=profile&comment=VOTT&key=${apiKey}`;
+        const Href = window.location.href;
+        const XID = Href.split('=')[1];
+        const apiUrl = `https://api.torn.com/user/${XID}?selections=profile&comment=VOTT&key=${apiKey}`;
 
         const response = await fetch(apiUrl);
 
