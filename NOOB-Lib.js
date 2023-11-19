@@ -14,7 +14,7 @@ const waitFor = (target, selector) => {
                 observer.disconnect();
             }
         });
-        observer.observe(document.body, {
+        observer.observe(target, {
             childList: true,
             subtree: true
         });
