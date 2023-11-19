@@ -3,6 +3,8 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.0
 // @description  Stacking mode on E-Bar to prevent gym while stacking.
+// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Stacking%20Mode.user.js
+// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Stacking%20Mode.user.js
 // @author       DaoChauNghia [3029549]
 // @match        https://www.torn.com/*php*
 // @exclude      https://www.torn.com/loader.php?sid=attack&user2ID=*
