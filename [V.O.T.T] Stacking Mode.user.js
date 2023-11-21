@@ -77,10 +77,10 @@
 
     // Function to add switch button to the page
     const EnerBar = document.querySelector('.bar___Bv5Ho').parentNode.insertBefore(createSwitchButton(), document.querySelectorAll('.bar___Bv5Ho')[0]);
-    console.log(EnerBar.parentNode);
+    //console.log(EnerBar.parentNode);
     if (window.location.href.match('https://www.torn.com/gym.php')) {
         let GymTable = document.querySelector('div#gymroot');
-        console.log(GymTable);
+        //console.log(GymTable);
         addImageBasedOnDisplay(GymTable);
         if (controls.StackEnabled) {
             GymTable.style.display = 'none';
