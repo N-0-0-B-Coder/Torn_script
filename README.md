@@ -32,6 +32,6 @@ If you are VNese, consider joining our community at [Facebook](https://www.faceb
 - **Target HP Percentage**: This script add a percentage of enemy HP when you attack another player. This will be useful for those want to control enemy HP for their stratergy, or are equipping RW bonus weapon especially Execute bonus weapon. Does not required API key.
 - **Chain Watcher**: This script add a UI box in faction page for chain watcher options, also add 2 button for quick target (advance quick target for donator/sub player and poor quick target for normal player) in case of the chain time is goes off less than threshold. Does not required API key.
 
-**Q&A - Question and Answer**
+### Q&A - Question and Answer
 
 WIP
