@@ -16,5 +16,5 @@ I'm Torn newbie and also JavaScript newbie, so for the learning and researching,
 
 **Contacting me**
 
-Please contact me via [Torn](https://www.torn.com/profiles.php?XID=3029549), [Facebook](https://www.facebook.com/daochaunghia/) or [Discord](https://discordapp.com/users/201635234687614976), [Github issue](https://github.com/N-0-0-B-Coder/V.O.T.T/issues). 
+Please contact me via [Torn](https://www.torn.com/profiles.php?XID=3029549), [Facebook](https://www.facebook.com/daochaunghia/), [Discord](https://discordapp.com/users/201635234687614976) or [Github issue](https://github.com/N-0-0-B-Coder/V.O.T.T/issues). 
 If you are VNese, consider joining our community at [Facebook](https://www.facebook.com/groups/1071025759766956) or [Discord](https://discord.gg/3emVFjmQbv). We always welcome new friends to join us.
