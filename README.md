@@ -23,14 +23,14 @@ If you are VNese, consider joining our community at [Facebook](https://www.faceb
 
 **Current list of scripts**
 
-- Days in faction: This script add a info next to faction info about how many day that player is in that factions. Required public API key to run.
+- **Days in faction**: This script add a info next to faction info about how many day that player is in that factions. Required public API key to run.
 - Employee Addiction: This script add a table of your company employee with addiction point and last action. The color will change to yellow and red for each level of warning. Click to red one will help you open email to that employee and copy a prepared content for that employee to paste into the email. Required Limited API key to run.
-- Employee Effectiveness: WIP
-- Refill notification: This script add 3 dots represent to Daily Energy Refill, Nerve Refill and Casino Token Refill with Green, Orange and Purple repsectively under your "Point" info. Each dot will disappear if you have used its refill in Torn system. Required Limited API key to run.
-- Search-Quick Attack: This will add a quick attack button when you search a userlist with normal searching (only press search in search bar without type anything) or with advanced searching (avaible for donator/sub player with more search option). Does not require API key.
-- Stacking mode: This script add a "Stack mode" button above your energy bar. When the stack mode is enabled, there is a large picture that will covered the gym page and you cannot train when that picture appear. Using when you are stacking energy for chains/events and don't want to accidentally using it. Does not require API key.
-- Target HP Percentage: This script add a percentage of enemy HP when you attack another player. This will be useful for those want to control enemy HP for their stratergy, or are equipping RW bonus weapon especially Execute bonus weapon. Does not required API key.
-- Chain Watcher: This script add a UI box in faction page for chain watcher options, also add 2 button for quick target (advance quick target for donator/sub player and poor quick target for normal player) in case of the chain time is goes off less than threshold. Does not required API key.
+- **Employee Effectiveness**: WIP
+- **Refill notification**: This script add 3 dots represent to Daily Energy Refill, Nerve Refill and Casino Token Refill with Green, Orange and Purple repsectively under your "Point" info. Each dot will disappear if you have used its refill in Torn system. Required Limited API key to run.
+- **Search-Quick Attack**: This will add a quick attack button when you search a userlist with normal searching (only press search in search bar without type anything) or with advanced searching (avaible for donator/sub player with more search option). Does not require API key.
+- **Stacking mode**: This script add a "Stack mode" button above your energy bar. When the stack mode is enabled, there is a large picture that will covered the gym page and you cannot train when that picture appear. Using when you are stacking energy for chains/events and don't want to accidentally using it. Does not require API key.
+- **Target HP Percentage**: This script add a percentage of enemy HP when you attack another player. This will be useful for those want to control enemy HP for their stratergy, or are equipping RW bonus weapon especially Execute bonus weapon. Does not required API key.
+- **Chain Watcher**: This script add a UI box in faction page for chain watcher options, also add 2 button for quick target (advance quick target for donator/sub player and poor quick target for normal player) in case of the chain time is goes off less than threshold. Does not required API key.
 
 **Q&A - Question and Answer**
 
