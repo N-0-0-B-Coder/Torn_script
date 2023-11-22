@@ -4,7 +4,7 @@
                                               
 **This is my collection of Torn script**
 
-Most of those are written by me. Some scripts are from other players but they are willing to share to everyone.
+Most of those are written by me. Anothers are from other players but they are willing to share to everyone.
 
 If you want to request new scripts, please help to submit this google form below:
 
