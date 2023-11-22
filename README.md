@@ -12,16 +12,16 @@ If you want to request new scripts, please help to submit this google form below
 
 Or you can go to issue tab and post your idea in it, I will check and write it!
 
-**The script is free for all**
+### The script is free for all
 
 I'm Torn newbie and also JavaScript newbie, so for the learning and researching, I made this repository free for everyone play Torn City, especially my fellow Viet friends. 
 
-**Contacting me**
+### Contacting me
 
 Please contact me via [Torn](https://www.torn.com/profiles.php?XID=3029549), [Facebook](https://www.facebook.com/daochaunghia/), [Discord](https://discordapp.com/users/201635234687614976) or [Github issue](https://github.com/N-0-0-B-Coder/V.O.T.T/issues). 
 If you are VNese, consider joining our community at [Facebook](https://www.facebook.com/groups/1071025759766956) or [Discord](https://discord.gg/3emVFjmQbv). We always welcome new friends to join us.
 
-**Current list of scripts**
+### Current list of scripts
 
 - **Days in faction**: This script add a info next to faction info about how many day that player is in that factions. Required public API key to run.
 - Employee Addiction: This script add a table of your company employee with addiction point and last action. The color will change to yellow and red for each level of warning. Click to red one will help you open email to that employee and copy a prepared content for that employee to paste into the email. Required Limited API key to run.
