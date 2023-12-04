@@ -27,8 +27,26 @@
     }
   };
 
-  const popup_fillInputs = (walletBalance, target) => {
-    window.location.href = "https://www.torn.com/properties.php#/p=options&tab=vault";
+  const popup_fillInputs = (target) => {
+    var newWin = window.location.href = "https://www.torn.com/properties.php#/p=options&tab=vault";
+    var newdocument = newWin.document;
+    newdocument.addEventListener('load', async function () {
+      const timer = setInterval(function () {
+        const area = newdocument.querySelector("div.vault-wrap.container-ask");
+        const leftInput = newdocument.querySelector("form.vault-cont.left input.input-money");
+        const rightInput = newdocument.querySelector("form.vault-cont.right input.input-money");
+
+        if (!(area && leftInput && rightInput)) {
+          return false;
+        }
+
+        const vaultBalance = parseInt(leftInput.getAttribute("data-money"));
+        const walletBalance = parseInt(rightInput.getAttribute("data-money"));
+
+        clearInterval(timer);
+        fillInputs(walletBalance, target);
+      }, 100);
+    });
   };
 
   if (window.location.href.indexOf("properties.php") != -1) {
