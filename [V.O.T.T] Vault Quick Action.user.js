@@ -7,13 +7,32 @@
 // @description  Add buttons to set money withdraw/deposit inputs to a target amount.
 // @author       DaoChauNghia[3029549]
 // @match        https://www.torn.com/*
+// @require      
 // @grant        none
 // ==/UserScript==
 
 (function () {
   'use strict';
 
-  const fillInputs = (walletBalance, target) => {
+  const waitFor = (target, selector) => {
+    return new Promise(resolve => {
+      if (target.querySelector(selector)) {
+        return resolve(target.querySelector(selector));
+      }
+      const observer = new MutationObserver(mutations => {
+        if (target.querySelector(selector)) {
+          resolve(target.querySelector(selector));
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    });
+  };
+
+  const fillInputs = (walletBalance, target, leftInput, rightInput) => {
     if (walletBalance > target) {
       leftInput.value = "";
       leftInput.dispatchEvent(new Event("input", { bubbles: true }));
@@ -28,24 +47,23 @@
   };
 
   const popup_fillInputs = (target) => {
-    var newWin = window.location.href = "https://www.torn.com/properties.php#/p=options&tab=vault";
+    var newWin = window.open("https://www.torn.com/properties.php#/p=options&tab=vault");
     var newdocument = newWin.document;
-    newdocument.addEventListener('load', async function () {
-      const timer = setInterval(function () {
-        const area = newdocument.querySelector("div.vault-wrap.container-ask");
-        const leftInput = newdocument.querySelector("form.vault-cont.left input.input-money");
-        const rightInput = newdocument.querySelector("form.vault-cont.right input.input-money");
+    newdocument.addEventListener("DOMContentLoaded", function () {
+      const area = newdocument.querySelector("div.vault-wrap.container-ask");
+      console.log(area);
+      const leftInput = newdocument.querySelector("form.vault-cont.left input.input-money");
+      console.log(leftInput);
+      const rightInput = newdocument.querySelector("form.vault-cont.right input.input-money");
+      console.log(rightInput);
 
-        if (!(area && leftInput && rightInput)) {
-          return false;
-        }
 
-        const vaultBalance = parseInt(leftInput.getAttribute("data-money"));
-        const walletBalance = parseInt(rightInput.getAttribute("data-money"));
+      const vaultBalance = parseInt(leftInput.getAttribute("data-money"));
+      const walletBalance = parseInt(rightInput.getAttribute("data-money"));
 
-        clearInterval(timer);
-        fillInputs(walletBalance, target);
-      }, 100);
+      clearInterval(timer);
+      console.log("Found vault input elements in new pop-up.");
+      fillInputs(walletBalance, target, leftInput, rightInput);
     });
   };
 
@@ -74,7 +92,7 @@
       zeroBtn.innerText = "0";
       zeroBtn.classList.add("torn-btn");
       zeroBtn.onclick = () => {
-        fillInputs(walletBalance, 0);
+        fillInputs(walletBalance, 0, leftInput, rightInput);
       };
       area.parentElement.insertBefore(zeroBtn, area);
 
@@ -82,7 +100,7 @@
       fiftyKBtn.innerText = "50k";
       fiftyKBtn.classList.add("torn-btn");
       fiftyKBtn.onclick = () => {
-        fillInputs(walletBalance, 50000);
+        fillInputs(walletBalance, 50000, leftInput, rightInput);
       };
       area.parentElement.insertBefore(fiftyKBtn, area);
 
@@ -90,7 +108,7 @@
       twoHunKBtn.innerText = "200k";
       twoHunKBtn.classList.add("torn-btn");
       twoHunKBtn.onclick = () => {
-        fillInputs(walletBalance, 200000);
+        fillInputs(walletBalance, 200000, leftInput, rightInput);
       };
       area.parentElement.insertBefore(twoHunKBtn, area);
 
@@ -98,7 +116,7 @@
       oneMBtn.innerText = "1M";
       oneMBtn.classList.add("torn-btn");
       oneMBtn.onclick = () => {
-        fillInputs(walletBalance, 1000000);
+        fillInputs(walletBalance, 1000000, leftInput, rightInput);
       };
       area.parentElement.insertBefore(oneMBtn, area);
 
@@ -106,7 +124,7 @@
       twoMBtn.innerText = "2M";
       twoMBtn.classList.add("torn-btn");
       twoMBtn.onclick = () => {
-        fillInputs(walletBalance, 2000000);
+        fillInputs(walletBalance, 2000000, leftInput, rightInput);
       };
       area.parentElement.insertBefore(twoMBtn, area);
 
@@ -114,7 +132,7 @@
       fiveMBtn.innerText = "5M";
       fiveMBtn.classList.add("torn-btn");
       fiveMBtn.onclick = () => {
-        fillInputs(walletBalance, 5000000);
+        fillInputs(walletBalance, 5000000, leftInput, rightInput);
       };
       area.parentElement.insertBefore(fiveMBtn, area);
     }, 100);
@@ -160,7 +178,7 @@
       zeroBtn.innerText = "0";
       zeroBtn.classList.add("torn-btn");
       zeroBtn.onclick = () => {
-        popup_fillInputs(walletBalance, 0);
+        popup_fillInputs(0);
       };
       body.appendChild(zeroBtn);
 
@@ -168,7 +186,7 @@
       TwoHunKBtn.innerText = "200k";
       TwoHunKBtn.classList.add("torn-btn");
       TwoHunKBtn.onclick = () => {
-        popup_fillInputs(walletBalance, 200000);
+        popup_fillInputs(200000);
       };
       body.appendChild(TwoHunKBtn);
 
@@ -176,7 +194,7 @@
       oneMBtn.innerText = "1M";
       oneMBtn.classList.add("torn-btn");
       oneMBtn.onclick = () => {
-        popup_fillInputs(walletBalance, 1000000);
+        popup_fillInputs(1000000);
       };
       body.appendChild(oneMBtn);
 
@@ -184,7 +202,7 @@
       tenMBtn.innerText = "10M";
       tenMBtn.classList.add("torn-btn");
       tenMBtn.onclick = () => {
-        popup_fillInputs(walletBalance, 10000000);
+        popup_fillInputs(10000000);
       };
       body.appendChild(tenMBtn);
 
