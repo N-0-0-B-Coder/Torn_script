@@ -48,8 +48,8 @@
 
   const popup_fillInputs = (target) => {
     var newWin = window.open("https://www.torn.com/properties.php#/p=options&tab=vault");
-    var newdocument = newWin.document;
-    newdocument.addEventListener("DOMContentLoaded", function () {
+    newWin.addEventListener("DOMContentLoaded", function () {
+      var newdocument = newWin.document;
       const area = newdocument.querySelector("div.vault-wrap.container-ask");
       console.log(area);
       const leftInput = newdocument.querySelector("form.vault-cont.left input.input-money");
@@ -61,7 +61,7 @@
       const vaultBalance = parseInt(leftInput.getAttribute("data-money"));
       const walletBalance = parseInt(rightInput.getAttribute("data-money"));
 
-      clearInterval(timer);
+      //clearInterval(timer);
       console.log("Found vault input elements in new pop-up.");
       fillInputs(walletBalance, target, leftInput, rightInput);
     });
