@@ -17,7 +17,7 @@
 
     function createTradeButton(name) {
         const tradeButton = document.createElement("button");
-        tradeButton.innerHTML = "Trade";
+        tradeButton.innerHTML = "Trade!";
         tradeButton.classList.add("torn-btn");
         tradeButton.id = "TradeButton" + traderID[name];
         tradeButton.addEventListener("click", function () {
