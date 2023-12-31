@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Quick Trade BUtton for YFT (Your Favorite Traders) - Simple Eddition
+// @name         Quick Trade Button for YFT (Simple)
 // @namespace    http://tampermonkey.net/
 // @version      1.0
-// @description  Quick Trade button in chat with your traderlist without opening profile page to trade with them.
+// @description  Quick Trade Button for YFT (Your Favorite Traders) - Simple Eddition: Quick Trade button in chat with your traderlist without opening profile page to trade with them.
 // @author       DaoChauNghia[3029549]
 // @match        https://www.torn.com/*php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
@@ -30,7 +30,7 @@
         const chatName = chatElement.querySelector("div > div.chat-box-header___P15jw > button > p").innerText;
         if (traderlist.includes(chatName) && !chatElement.querySelector("#TradeButton" + traderID[chatName])) {
             const tradeButton = createTradeButton(chatName);
-            const chatFooter = chatElement.querySelector("div > div.chat-box-footer___YK914 > textarea");
+            const chatFooter = chatElement.querySelector("div > div.chat-box-footer___YK914 > button");
             chatFooter.after(tradeButton);
         }
     }
