@@ -77,7 +77,4 @@
 
     //#endregion
 
-    //#region addTraderList
-    
-    //#endregion
 })();
