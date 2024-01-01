@@ -12,6 +12,8 @@
 (function () {
     'use strict';
 
+    //#region createTradeButton
+
     const traderlist = ["Qwerty1326", "Khang2412"];
     const traderID = { "Qwerty1326": 3022432, "Khang2412": 2353835 };
 
@@ -72,5 +74,10 @@
     const observer = new MutationObserver(handleNewElements);
     const chatListContainer = document.querySelector(".chat-app__chat-list-chat-box-wrapper___S7MmX");
     observer.observe(chatListContainer, { childList: true, subtree: true });
+
+    //#endregion
+
+    //#region addTraderList
     
+    //#endregion
 })();
