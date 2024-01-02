@@ -47,5 +47,6 @@ function GM_SaveData(controls) {
 function GM_LoadData(controls) {
     const storedControls = JSON.parse(GM_getValue('State', '{}'));
     controls = storedControls || false;
+    return controls;
 }
 ///////////////////////GM_Value/////////////////////
