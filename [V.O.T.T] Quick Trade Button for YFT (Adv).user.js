@@ -6,7 +6,6 @@
 // @author       DaoChauNghia[3029549]
 // @match        https://www.torn.com/*php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
-// @require      https://github.com/N-0-0-B-Coder/Torn_script/raw/main/NOOB-Lib.js
 // @grant        GM_setValue
 // @grant        GM_getValue
 // ==/UserScript==
@@ -14,7 +13,29 @@
 (function () {
     'use strict';
 
+    const controls = {};
+    controls.traderlist = [];
+    controls.traderID = {};
+
     //#region Ultilities
+
+    const waitFor = (target, selector) => {
+        return new Promise(resolve => {
+            if (target.querySelector(selector)) {
+                return resolve(target.querySelector(selector));
+            }
+            const observer = new MutationObserver(mutations => {
+                if (target.querySelector(selector)) {
+                    resolve(target.querySelector(selector));
+                    observer.disconnect();
+                }
+            });
+            observer.observe(target, {
+                childList: true,
+                subtree: true
+            });
+        });
+    };
 
     function NotificationYFT(message) {
         const notification = document.createElement("p");
@@ -26,18 +47,24 @@
         }, 1000);
     }
 
+    // Function to save state using GM_setValue
+    function GM_SaveData(controls) {
+        GM_setValue('State', JSON.stringify(controls));
+    }
+
+    // Function to load state using GM_getValue
+    function GM_LoadData() {
+        const storedControls = JSON.parse(GM_getValue('State', '{}'));
+        controls.traderID = storedControls.traderID || {};
+        controls.traderlist = storedControls.traderlist || [];
+    }
+
     //#endregion
 
     //#region createTradeButton
 
-    //const traderlist = ["Qwerty1326", "Khang2412"];
-    //const traderID = { "Qwerty1326": 3022432, "Khang2412": 2353835 };
-    const controls = {};
-    controls["traderlist"] = [];
-    controls["traderID"] = {};
-
-    controls = GM_LoadData(controls);
-    console.log(controls);
+    GM_LoadData(controls);
+    //console.log(controls);
 
     function createTradeButton(name) {
         const tradeButton = document.createElement("button");
@@ -109,7 +136,6 @@
         favoriteTrader.id = "button12-profile-" + profileID;
         favoriteTrader.classList.add("profile-button", "profile-button-YFT", "active");
         favoriteTrader.setAttribute("aria-label", "YFT");
-        //favoriteTrader.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="default___XXAGt profileButtonIcon" filter="" fill="url(#linear-gradient-disable-dark-mode)" stroke="#d4d4d4" stroke-width="0" width="46" height="46" viewBox="478.6 178 46 46"><path d="M494,198h4v-4h4v4h4v4h-4v4h-4v-4h-4Zm-5,2a11,11,0,1,0,11-11A10.968,10.968,0,0,0,489,200Z"></path></svg>';
         favoriteTrader.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="default___XXAGt profileButtonIcon" filter="" fill="yellow" stroke="#d4d4d4" stroke-width="0" width="46" height="46" viewBox="694.6 178 46 46"><path d="M 708.5246 202.2194 L 699.8984 194.9941 L 711.2526 194.1093 L 715 183 L 719.7313 194.1093 L 731.0117 194.9941 L 722.3854 202.2194 L 725.1871 213.2786 L 715.455 207.2329 L 705.7966 213.5735 L 708.5246 202.2194 m 6.4754 -6.2194 H 718 V 195 H 714 V 206 L 715 206 L 715 200 L 718 200 V 199 H 715 M 708 195 L 709 200 L 710 202 L 710 200 L 709 195 M 713 195 L 712 195 L 711 200 L 711 202 L 712 200 M 710 201 L 711 201 L 711 200 L 710 200 M 711 201 L 710 201 L 710 206 L 711 206 M 719 196 L 724 196 L 724 195 L 719 195 M 721 196 L 721 206 L 722 206 l 0 -10 Z"></path></svg>';
 
         favoriteTrader.addEventListener("click", function () {
@@ -130,10 +156,9 @@
             }
         });
 
-        waitFor(document.body,"#profile-container-description").then((profileDescription) => {
-        var buttonlist = profileDescription.parentNode.querySelector("div.buttons-wrap > div > a:last-child");
-        //console.log(buttonlist);
-        buttonlist.after(favoriteTrader);
+        waitFor(document.body, "#profile-container-description").then((profileDescription) => {
+            var buttonlist = profileDescription.parentNode.querySelector("div.buttons-wrap > div > a:last-child");
+            buttonlist.after(favoriteTrader);
         });
     }
     //#endregion
