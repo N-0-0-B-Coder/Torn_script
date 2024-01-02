@@ -3,6 +3,8 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.0
 // @description  Quick Trade Button for YFT (Your Favorite Traders)
+// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Quick%20Trade%20Button%20for%20YFT.user.js
+// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/%5BV.O.T.T%5D%20Quick%20Trade%20Button%20for%20YFT.user.js
 // @author       DaoChauNghia[3029549]
 // @match        https://www.torn.com/*php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
