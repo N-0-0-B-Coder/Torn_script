@@ -1,14 +1,17 @@
 // ==UserScript==
-// @name         Quick Trade Button for YFT (Adv)
+// @name         Quick Trade Button for YFT
 // @namespace    http://tampermonkey.net/
 // @version      1.0
-// @description  Quick Trade Button for YFT (Your Favorite Traders) - Advance Eddition: Quick Trade button in chat with your traderlist without opening profile page to trade with them. Go to their profile and add your favorite traders before using.
+// @description  Quick Trade Button for YFT (Your Favorite Traders)
 // @author       DaoChauNghia[3029549]
 // @match        https://www.torn.com/*php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // @grant        GM_setValue
 // @grant        GM_getValue
 // ==/UserScript==
+
+// Quick Trade Button for YFT (Your Favorite Traders) - Advance Eddition: Quick Trade button in user menu list while in chat with your traderlist.
+// Go to their profile and add your favorite traders before using.
 
 (function () {
     'use strict';
