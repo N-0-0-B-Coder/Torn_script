@@ -6,6 +6,7 @@
 // @author       DaoChauNghia[3029549]
 // @match        https://www.torn.com/*php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
+// @require      https://github.com/N-0-0-B-Coder/Torn_script/raw/main/NOOB-Lib.js
 // @grant        none
 // ==/UserScript==
 
@@ -77,24 +78,6 @@
 
     //#endregion
 
-    const waitFor = (target, selector) => {
-        return new Promise(resolve => {
-            if (target.querySelector(selector)) {
-                return resolve(target.querySelector(selector));
-            }
-            const observer = new MutationObserver(mutations => {
-                if (target.querySelector(selector)) {
-                    resolve(target.querySelector(selector));
-                    observer.disconnect();
-                }
-            });
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        });
-    };
-
     //#region addTradeListInProfile
     if (window.location.href.startsWith("https://www.torn.com/profiles.php")) {
         const profileID = window.location.href.split("XID=")[1];
@@ -107,6 +90,7 @@
         favoriteTrader.setAttribute("aria-label", "YFT");
         //favoriteTrader.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="default___XXAGt profileButtonIcon" filter="" fill="url(#linear-gradient-disable-dark-mode)" stroke="#d4d4d4" stroke-width="0" width="46" height="46" viewBox="478.6 178 46 46"><path d="M494,198h4v-4h4v4h4v4h-4v4h-4v-4h-4Zm-5,2a11,11,0,1,0,11-11A10.968,10.968,0,0,0,489,200Z"></path></svg>';
         favoriteTrader.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="default___XXAGt profileButtonIcon" filter="" fill="yellow" stroke="#d4d4d4" stroke-width="0" width="46" height="46" viewBox="694.6 178 46 46"><path d="M 708.5246 202.2194 L 699.8984 194.9941 L 711.2526 194.1093 L 715 183 L 719.7313 194.1093 L 731.0117 194.9941 L 722.3854 202.2194 L 725.1871 213.2786 L 715.455 207.2329 L 705.7966 213.5735 L 708.5246 202.2194 M 710 196 H 712 V 195 H 709 V 206 L 710 206 L 710 200 L 712 200 V 199 H 710 M 713 195 L 714 200 L 715 202 L 715 200 L 714 195 M 718 195 L 717 195 L 716 200 L 716 202 L 717 200 M 715 201 L 716 201 L 716 200 L 715 200 M 716 201 L 715 201 L 715 206 L 716 206 M 719 196 L 724 196 L 724 195 L 719 195 M 721 196 L 721 206 L 722 206 L 722 196 Z"></path></svg>';
+
 /*
         const favoriteTraderSvg = document.createElement("Svg");
         favoriteTraderSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
