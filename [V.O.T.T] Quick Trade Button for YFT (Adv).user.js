@@ -35,9 +35,9 @@
     const controls = {};
     controls["traderlist"] = [];
     controls["traderID"] = {};
-    console.log(controls);
 
     GM_LoadData(controls);
+    console.log(controls);
 
     function createTradeButton(name) {
         const tradeButton = document.createElement("button");
