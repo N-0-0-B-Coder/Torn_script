@@ -36,7 +36,7 @@
     controls["traderlist"] = [];
     controls["traderID"] = {};
 
-    GM_LoadData(controls);
+    controls = GM_LoadData(controls);
     console.log(controls);
 
     function createTradeButton(name) {
