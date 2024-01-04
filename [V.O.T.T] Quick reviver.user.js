@@ -25,11 +25,12 @@
                     //console.log(reviveElement);
                     if (reviveElement && reviveElement.className.includes('reviveNotAvailable')) {
                         userProf.style = "display:none;";
-                    } else {
+                    } 
+                    /*else {
                         reviveElement.click();
                         reviveElement.click();
                     }
-/*
+
                     if (userProf.style.display !== "none") {
                         let revivechance = userProf.querySelector("div.confirm-revive > div").hasChildNodes();
                         console.log(revivechance);
