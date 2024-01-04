@@ -27,15 +27,19 @@
                         userProf.style = "display:none;";
                     } else {
                         reviveElement.click();
+                        reviveElement.click();
+                    }
+
+                    if (userProf.style.display !== "none" && userProf.querySelector("div.confirm-revive > div").childList.length !== 0) {
                         let revivechance = userProf.querySelector("div.confirm-revive > div");
                         console.log(revivechance);
-                        reviveElement.click();
                     }
 
                 });
             }
         });
     });
+
 
     AdSearchobserver.observe(observerTarget, observerConfig);
 
