@@ -24,7 +24,7 @@ If you are VNese, consider joining our community at [Facebook](https://www.faceb
 ### Current list of scripts
 
 - **Days in faction**: This script add a info next to faction info about how many day that player is in that factions. Required public API key to run.
-- Employee Addiction: This script add a table of your company employee with addiction point and last action. The color will change to yellow and red for each level of warning. Click to red one will help you open email to that employee and copy a prepared content for that employee to paste into the email. Required Limited API key to run.
+- **Employee Addiction**: This script add a table of your company employee with addiction point and last action. The color will change to yellow and red for each level of warning. Click to red one will help you open email to that employee and copy a prepared content for that employee to paste into the email. Required Limited API key to run.
 - **Employee Effectiveness**: WIP
 - **Refill notification**: This script add 3 dots represent to Daily Energy Refill, Nerve Refill and Casino Token Refill with Green, Orange and Purple repsectively under your "Point" info. Each dot will disappear if you have used its refill in Torn system. Required Limited API key to run.
 - **Search-Quick Attack**: This will add a quick attack button when you search a userlist with normal searching (only press search in search bar without type anything) or with advanced searching (avaible for donator/sub player with more search option). Does not require API key.
