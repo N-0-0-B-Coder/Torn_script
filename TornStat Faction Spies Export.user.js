@@ -4,6 +4,8 @@
 // @version      2024-03-29
 // @description  Export spies data to CSV
 // @author       DaoChauNghia
+// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/blob/main/TornStat%20Faction%20Spies%20Export.user.js
+// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/blob/main/TornStat%20Faction%20Spies%20Export.user.js
 // @match        https://www.tornstats.com/spies/faction?page=*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tornstats.com
 // @grant        none
