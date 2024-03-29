@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Spies Export
+// @name         TornStat Faction Spies Export
 // @namespace    http://tampermonkey.net/
 // @version      2024-03-29
 // @description  Export spies data to CSV
