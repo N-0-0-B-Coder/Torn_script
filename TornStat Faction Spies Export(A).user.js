@@ -13,7 +13,6 @@
 
 (function () {
   "use strict";
-
   // Function to download CSV
   function downloadCSV(csv, filename) {
     var csvFile;
@@ -94,22 +93,26 @@
   function processPage(pageNumber, endPage) {
     // Check if the current page number is within the specified range
     if (pageNumber > endPage) {
-      alert("Export completed!");
       return;
     }
 
-    //go to the designated page
-    window.location.href =
-      "https://www.tornstats.com/spies/faction?page=" + pageNumber;
-
     // Retrieve data from the current page
-    //var csvData = exportTableToCSV("spies_data_page_" + pageNumber + ".csv");
     saveCSVTemporarily();
 
     // Proceed to the next page
     var nextPage = pageNumber + 1;
+    if (nextPage > endPage) {
+      return;
+    }
     window.location.href =
       "https://www.tornstats.com/spies/faction?page=" + nextPage;
+  }
+
+  // Function to process each page with a delay
+  function processPageWithDelay(pageNumber, endPage, delay) {
+    setTimeout(function () {
+      processPage(pageNumber, endPage);
+    }, delay);
   }
 
   // Function to start exporting data
@@ -120,8 +123,10 @@
       return;
     }
 
-    // Process the first page
-    processPage(startPage, endPage);
+    // Process pages from startPage to endPage
+    for (var page = startPage; page <= endPage; page++) {
+      processPageWithDelay(page, endPage, 5000);
+    }
   }
 
   // Create download button
@@ -149,12 +154,12 @@
   // Create delete cache button
   var deleteCacheButton = document.createElement("button");
   deleteCacheButton.textContent = "Delete Cached Data";
-  //document.body.appendChild(deleteCacheButton);
 
   // Attach event listener to the delete cache button
   deleteCacheButton.addEventListener("click", function () {
     deleteCachedCSVData();
   });
+
   // Attach event listener to the start button
   startButton.addEventListener("click", function () {
     var startPage = parseInt(startPageInput.value);
@@ -163,7 +168,7 @@
     startExport(startPage, endPage);
   });
 
-  // Append button before specified path
+  // Append elements to the page
   var targetElement = document.querySelector(
     "#app > div.container.pt-5 > div > div > div > div > nav"
   );
@@ -173,5 +178,14 @@
     targetElement.insertBefore(startButton, targetElement.firstChild);
     targetElement.insertBefore(endPageInput, targetElement.firstChild);
     targetElement.insertBefore(startPageInput, targetElement.firstChild);
+  }
+
+  var targetElement2 = document.querySelector("#spies-table");
+  if (targetElement2) {
+    targetElement2.insertBefore(deleteCacheButton, targetElement2.firstChild);
+    targetElement2.insertBefore(downloadButton, targetElement2.firstChild);
+    targetElement2.insertBefore(startButton, targetElement2.firstChild);
+    targetElement2.insertBefore(endPageInput, targetElement2.firstChild);
+    targetElement2.insertBefore(startPageInput, targetElement2.firstChild);
   }
 })();
