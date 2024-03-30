@@ -1,14 +1,14 @@
 // ==UserScript==
-// @name         TornStat Faction Spies Export
+// @name         Spies Export
 // @namespace    http://tampermonkey.net/
 // @version      2024-03-29
-// @description  Export spies data to CSV
+// @description  Export spies data to CSV format
 // @author       DaoChauNghia
-// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/blob/main/TornStat%20Faction%20Spies%20Export.user.js
-// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/blob/main/TornStat%20Faction%20Spies%20Export.user.js
 // @match        https://www.tornstats.com/spies/faction*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tornstats.com
-// @grant        none
+// @grant        GM_setValue
+// @grant        GM_getValue
+// @grant        GM_deleteValue
 // ==/UserScript==
 
 (function () {
@@ -44,9 +44,22 @@
   }
 
   function exportTableToCSV(filename) {
-    var csv = [];
-    var rows = document.querySelectorAll("#spies-table tbody tr");
+    var csv = GM_getValue("temporaryCSVData");
+    if (!csv) {
+      alert("No CSV data found.");
+      return;
+    }
 
+    // Download CSV file
+    downloadCSV(csv, filename);
+  }
+
+  function saveCSVTemporarily() {
+    var csv = GM_getValue("temporaryCSVData", ""); // Retrieve existing CSV data, default to empty string if not found
+    var newData = []; // Array to store new data
+
+    // Generate CSV data from the current table
+    var rows = document.querySelectorAll("#spies-table tbody tr");
     for (var i = 0; i < rows.length; i++) {
       var row = [],
         cols = rows[i].querySelectorAll("td");
@@ -56,11 +69,20 @@
         row.push(cellData);
       }
 
-      csv.push(row.join(","));
+      newData.push(row.join(","));
     }
 
-    // Download CSV file
-    downloadCSV(csv.join("\n"), filename);
+    // Combine existing CSV data with new data
+    var combinedData = csv + "\n" + newData.join("\n");
+
+    // Save combined CSV data temporarily
+    GM_setValue("temporaryCSVData", combinedData);
+    alert("CSV data saved temporarily!");
+  }
+
+  function deleteCachedCSVData() {
+    GM_deleteValue("temporaryCSVData");
+    alert("Cached CSV data deleted!");
   }
 
   // Create download button
@@ -76,8 +98,36 @@
     targetElement.insertBefore(downloadButton, targetElement.firstChild);
   }
 
-  // Attach event listener to the button
+  // Attach event listener to the download button
   downloadButton.addEventListener("click", function () {
     exportTableToCSV("spies_data.csv");
+  });
+
+  // Create save button
+  var saveButton = document.createElement("button");
+  saveButton.textContent = "Save CSV Data Temporarily";
+
+  // Append button before specified path
+  if (targetElement) {
+    targetElement.insertBefore(saveButton, targetElement.firstChild);
+  }
+
+  // Attach event listener to the save button
+  saveButton.addEventListener("click", function () {
+    saveCSVTemporarily();
+  });
+
+  // Create delete cache button
+  var deleteCacheButton = document.createElement("button");
+  deleteCacheButton.textContent = "Delete Cached Data";
+
+  // Append button before specified path
+  if (targetElement) {
+    targetElement.insertBefore(deleteCacheButton, targetElement.firstChild);
+  }
+
+  // Attach event listener to the delete cache button
+  deleteCacheButton.addEventListener("click", function () {
+    deleteCachedCSVData();
   });
 })();
