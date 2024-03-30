@@ -13,6 +13,7 @@
 
 (function () {
   "use strict";
+
   // Function to download CSV
   function downloadCSV(csv, filename) {
     var csvFile;
@@ -56,7 +57,6 @@
   }
 
   // Function to save CSV data temporarily
-
   function saveCSVTemporarily() {
     var csv = GM_getValue("temporaryCSVData", ""); // Retrieve existing CSV data, default to empty string if not found
     var newData = []; // Array to store new data
@@ -89,6 +89,13 @@
     alert("Cached CSV data deleted!");
   }
 
+  // Function to process each page with a delay
+  function processPageWithDelay(pageNumber, endPage, delay) {
+    setTimeout(function () {
+      processPage(pageNumber, endPage);
+    }, delay);
+  }
+
   // Function to process each page
   function processPage(pageNumber, endPage) {
     // Check if the current page number is within the specified range
@@ -104,28 +111,22 @@
     if (nextPage > endPage) {
       return;
     }
-    window.location.href =
-      "https://www.tornstats.com/spies/faction?page=" + nextPage;
-  }
-
-  // Function to process each page with a delay
-  function processPageWithDelay(pageNumber, endPage, delay) {
-    setTimeout(function () {
-      processPage(pageNumber, endPage);
-    }, delay);
+    window.location.replace(
+      "https://www.tornstats.com/spies/faction?page=" + nextPage
+    );
   }
 
   // Function to start exporting data
-  function startExport(startPage, endPage) {
+  function startExport(startPage, endPage, delay) {
     // Check if startPage and endPage are valid numbers
     if (isNaN(startPage) || isNaN(endPage)) {
       alert("Please enter valid page numbers.");
       return;
     }
 
-    // Process pages from startPage to endPage
+    // Process pages from startPage to endPage with delay between iterations
     for (var page = startPage; page <= endPage; page++) {
-      processPageWithDelay(page, endPage, 5000);
+      processPageWithDelay(page, endPage, delay);
     }
   }
 
@@ -151,6 +152,10 @@
   endPageInput.type = "text";
   endPageInput.placeholder = "Ending page";
 
+  var delayInput = document.createElement("input");
+  delayInput.type = "text";
+  delayInput.placeholder = "Delay between pages (milliseconds)";
+
   // Create delete cache button
   var deleteCacheButton = document.createElement("button");
   deleteCacheButton.textContent = "Delete Cached Data";
@@ -164,8 +169,9 @@
   startButton.addEventListener("click", function () {
     var startPage = parseInt(startPageInput.value);
     var endPage = parseInt(endPageInput.value);
+    //var delay = parseInt(delayInput.value);
 
-    startExport(startPage, endPage);
+    startExport(startPage, endPage, 5000);
   });
 
   // Append elements to the page
@@ -178,14 +184,6 @@
     targetElement.insertBefore(startButton, targetElement.firstChild);
     targetElement.insertBefore(endPageInput, targetElement.firstChild);
     targetElement.insertBefore(startPageInput, targetElement.firstChild);
-  }
-
-  var targetElement2 = document.querySelector("#spies-table");
-  if (targetElement2) {
-    targetElement2.insertBefore(deleteCacheButton, targetElement2.firstChild);
-    targetElement2.insertBefore(downloadButton, targetElement2.firstChild);
-    targetElement2.insertBefore(startButton, targetElement2.firstChild);
-    targetElement2.insertBefore(endPageInput, targetElement2.firstChild);
-    targetElement2.insertBefore(startPageInput, targetElement2.firstChild);
+    //targetElement.insertBefore(delayInput, targetElement.firstChild);
   }
 })();
