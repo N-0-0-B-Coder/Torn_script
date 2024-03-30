@@ -14,6 +14,18 @@
 (function () {
   "use strict";
 
+  window.onload = function () {
+    var nextPage = GM_getValue("temporarynextPage", null);
+    var endPage = GM_getValue("EndingPage", "");
+    if (nextPage !== null) {
+      // Remove the item from the session storage
+      GM_deleteValue("temporarynextPage");
+
+      // Process the next page
+      processPage(nextPage, endPage);
+    }
+  };
+
   // Function to download CSV
   function downloadCSV(csv, filename) {
     var csvFile;
@@ -86,14 +98,8 @@
   // Function to delete cached CSV data
   function deleteCachedCSVData() {
     GM_deleteValue("temporaryCSVData");
+    GM_deleteValue("EndingPage");
     alert("Cached CSV data deleted!");
-  }
-
-  // Function to process each page with a delay
-  function processPageWithDelay(pageNumber, endPage, delay) {
-    setTimeout(function () {
-      processPage(pageNumber, endPage);
-    }, delay);
   }
 
   // Function to process each page
@@ -111,6 +117,11 @@
     if (nextPage > endPage) {
       return;
     }
+
+    // Save the next page number
+    GM_setValue("temporarynextPage", nextPage);
+
+    // Proceed to the next page
     window.location.replace(
       "https://www.tornstats.com/spies/faction?page=" + nextPage
     );
@@ -125,9 +136,7 @@
     }
 
     // Process pages from startPage to endPage with delay between iterations
-    for (var page = startPage; page <= endPage; page++) {
-      processPageWithDelay(page, endPage, 5000);
-    }
+    processPage(startPage, endPage);
   }
 
   // Create download button
@@ -169,6 +178,7 @@
   startButton.addEventListener("click", function () {
     var startPage = parseInt(startPageInput.value);
     var endPage = parseInt(endPageInput.value);
+    GM_setValue("EndingPage", endPage);
     //var delay = parseInt(delayInput.value);
 
     startExport(startPage, endPage);
