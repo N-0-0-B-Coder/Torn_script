@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Spies Export
+// @name         Spies Export (auto)
 // @namespace    http://tampermonkey.net/
 // @version      2024-03-29
 // @description  Export spies data to CSV and save it temporarily
@@ -117,7 +117,7 @@
   }
 
   // Function to start exporting data
-  function startExport(startPage, endPage, delay) {
+  function startExport(startPage, endPage) {
     // Check if startPage and endPage are valid numbers
     if (isNaN(startPage) || isNaN(endPage)) {
       alert("Please enter valid page numbers.");
@@ -126,7 +126,7 @@
 
     // Process pages from startPage to endPage with delay between iterations
     for (var page = startPage; page <= endPage; page++) {
-      processPageWithDelay(page, endPage, delay);
+      processPageWithDelay(page, endPage, 5000);
     }
   }
 
@@ -151,11 +151,11 @@
   var endPageInput = document.createElement("input");
   endPageInput.type = "text";
   endPageInput.placeholder = "Ending page";
-
-  var delayInput = document.createElement("input");
-  delayInput.type = "text";
-  delayInput.placeholder = "Delay between pages (milliseconds)";
-
+  /*
+    var delayInput = document.createElement("input");
+    delayInput.type = "text";
+    delayInput.placeholder = "Delay between pages (milliseconds)";
+*/
   // Create delete cache button
   var deleteCacheButton = document.createElement("button");
   deleteCacheButton.textContent = "Delete Cached Data";
@@ -171,7 +171,7 @@
     var endPage = parseInt(endPageInput.value);
     //var delay = parseInt(delayInput.value);
 
-    startExport(startPage, endPage, 5000);
+    startExport(startPage, endPage);
   });
 
   // Append elements to the page
