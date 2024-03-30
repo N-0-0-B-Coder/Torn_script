@@ -31,8 +31,10 @@
     var csvFile;
     var downloadLink;
 
+    var headerData = GM_getValue("headercheck", []); // Initialize as an empty array
+
     // CSV file
-    csvFile = new Blob([csv], { type: "text/csv" });
+    csvFile = new Blob([headerData.join(",") + csv], { type: "text/csv" });
 
     // Download link
     downloadLink = document.createElement("a");
@@ -73,6 +75,18 @@
     var csv = GM_getValue("temporaryCSVData", ""); // Retrieve existing CSV data, default to empty string if not found
     var newData = []; // Array to store new data
 
+    var headerData = GM_getValue("headercheck", []); // Initialize as an empty array
+    if (headerData.length === 0) {
+      // Check if the header data is empty
+      // Generate the table header
+      var header = document.querySelectorAll("#spies-table thead tr th");
+      for (var i = 0; i < header.length; i++) {
+        var headercell = header[i].innerText.trim();
+        headerData.push(headercell);
+      }
+      GM_setValue("headercheck", headerData);
+    }
+
     // Generate CSV data from the current table
     var rows = document.querySelectorAll("#spies-table tbody tr");
     for (var i = 0; i < rows.length; i++) {
@@ -99,6 +113,7 @@
   function deleteCachedCSVData() {
     GM_deleteValue("temporaryCSVData");
     GM_deleteValue("EndingPage");
+    GM_deleteValue("headercheck");
     alert("Cached CSV data deleted!");
   }
 
