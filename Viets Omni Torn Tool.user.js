@@ -66,6 +66,8 @@ function CheckStorageBoolWithDefaultValue(key, defaultValueIfUnset) {
 
 var styleToAdd = document.createElement('style');
 
+styleToAdd.innerHTML += `@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap")`;
+
 /* Style the tab */
 styleToAdd.innerHTML += '.VOTT_Setting_Menu {border: 1px solid #ccc;background-color: #f1f1f1;}';
 
@@ -82,8 +84,8 @@ styleToAdd.innerHTML += '.VOTT_SettingsCellMenu {width:100px; background:white; 
 
 styleToAdd.innerHTML += '.VOTT_SettingsHeader {text-align: center; font-size: 18px !important; background: black; color: white;}';
 
-styleToAdd.rel = 'stylesheet';
-styleToAdd.href = "https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap";
+//styleToAdd.rel = 'stylesheet';
+//styleToAdd.href = "https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap";
 
 /* Buttons in Option menu content */
 styleToAdd.innerHTML += '.VOTT_buttonInOptionMenu { background-color: black; border-radius: 4px; border-style: none; box-sizing: border-box; color: #fff;cursor: pointer;display: inline-block; font-family: "Farfetch Basis", "Helvetica Neue", Arial, sans-serif;';
@@ -259,7 +261,7 @@ function SettingsMenu(Selector) {
 
     let TitleVOTTSettingsDiv = document.createElement("div");
     TitleVOTTSettingsDiv.innerHTML = '<p style="font-size:30px;max-width:600px;max-height:100px;text-align:center;vertical-align: middle;margin-bottom:10px;margin-top:10px;">VIETS OMNI TORN TOOL</p>';
-    TitleVOTTSettingsDiv.style.fontFamily = 'Black Ops One';
+    TitleVOTTSettingsDiv.style.fontFamily = `"Black Ops One", system-ui`;
     console.log("Font family: " + TitleVOTTSettingsDiv.style.fontFamily);
     MenuHeader2.appendChild(TitleVOTTSettingsDiv);
 
