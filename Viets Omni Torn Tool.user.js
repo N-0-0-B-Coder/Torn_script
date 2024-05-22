@@ -129,7 +129,7 @@ styleToAdd.innerHTML +=
    "font-size: 12px;font-weight: 100; line-height: 1;  margin: 0; max-width: none; min-width: 10px;  outline: none;overflow: hidden;  padding: 5px 5px; position: relative;  text-align: center;";
 styleToAdd.innerHTML +=
    "text-transform: none;  user-select: none; -webkit-user-select: none;  touch-action: manipulation; width: 100%;}";
-styleToAdd.innerHTML += ".VOTT_button: hover, .VOTT_button:focus { opacity: .75;}";
+styleToAdd.innerHTML += ".VOTT_button:hover, .VOTT_button:focus { opacity: .75;}";
 
 // Get the first script tag
 var ref = document.querySelector("script");
