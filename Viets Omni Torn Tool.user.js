@@ -68,7 +68,7 @@ function CheckStorageBoolWithDefaultValue(key, defaultValueIfUnset) {
 
 var styleToAdd = document.createElement("style");
 
-styleToAdd.innerHTML += `@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap")`;
+styleToAdd.innerHTML += `@import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap");`;
 
 /* Style the tab */
 styleToAdd.innerHTML +=
