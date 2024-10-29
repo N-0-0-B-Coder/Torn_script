@@ -652,7 +652,7 @@
         mutationObserver2.observe(bodyhtml2, { attributes: true });
         btnNormalTargetFind.onclick = function (e) {
             let randID = getRandomNumber(minID, maxID);
-            let profileLink = `https://www.torn.com/profiles.php?XID=${randID}`;
+            let profileLink = `https://www.torn.com/loader.php?sid=attack&user2ID=${randID}`;
             // Comment this line and uncomment the one below it if you want the profile to open in a new tab
             //window.location.href = advancesearch;
             window.open(profileLink, '_blank');
