@@ -2,6 +2,8 @@
 // @name         Total WorkStat-Advanced Search
 // @namespace    http://tampermonkey.net/
 // @version      1.0.0
+// @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Total%20WorkStat-Advanced%20Search.user.js
+// @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Total%20WorkStat-Advanced%20Search.user.js
 // @description  Present workstat value beside player name in advanced search
 // @author       DaoChauNghia[3029549]
 // @match        https://www.torn.com/page.php?sid=UserList*
@@ -93,7 +95,7 @@ let GM_addStyle = function (s) {
         }
     }
 
-    // #endregion
+    // #endregion API Key Validation
 
     let AdSearchobserver = new MutationObserver(function(mutations) {
         mutations.forEach((mutation) => {
@@ -103,7 +105,14 @@ let GM_addStyle = function (s) {
                     let user = this.className;
                     let userID = user.replace("user", "");
                     let userIcons = $(this).find("div.level-icons-wrap > span.user-icons");
-                    if (userIcons.length > 0 && !userIcons[0].querySelector(".advance-search-workstat")) {
+                    if (
+                        userIcons.length > 0 &&
+                        !userIcons[0].hasAttribute('data-ws-processed')
+                    ) {
+                        userIcons[0].setAttribute('data-ws-processed', 'true');
+                        // Remove any existing block before adding a new one
+                        let existing = userIcons[0].querySelector('.advance-search-workstat');
+                        if (existing) existing.remove();
                         insertWorkstat(userIcons[0], userID);
                     }
                     let iconWrap = this.querySelector('span.icons-wrap');
@@ -129,8 +138,6 @@ let GM_addStyle = function (s) {
             addWSBlock(element, workstatCache[ID]);
             return;
         }
-
-        console.log(`https://api.torn.com/v2/user/${ID}/hof?key=${storedApiKey}`);
 
         // Otherwise, fetch and cache
         fetch(`https://api.torn.com/v2/user/${ID}/hof?key=${storedApiKey}`)
