@@ -32,7 +32,7 @@ let GM_addStyle = function (s) {
 
     const observerTarget = $(".content-wrapper")[0];
     const observerConfig = { attributes: false, childList: true, characterData: false, subtree: true };
-    const unavailable = ['Traveling','Hospital','Federal','Jail'];
+    const unavailable = ['Job','Federal'];
     const workstatCache = {};
 
     // #region API Key Validation
@@ -99,9 +99,24 @@ let GM_addStyle = function (s) {
 
     let AdSearchobserver = new MutationObserver(function(mutations) {
         mutations.forEach((mutation) => {
-            if (mutation.target.classList.contains("user-info-list-wrap") || mutation.target.classList.contains("userlist-wrapper")) {
+            if (
+                mutation.target.classList.contains("user-info-list-wrap") ||
+                mutation.target.classList.contains("userlist-wrapper")
+            ) {
                 let containerID = $("ul.user-info-list-wrap > li");
-                containerID.each(function() {
+                containerID.each(function () {
+                    let status = this.querySelectorAll('ul#iconTray > li');
+                    // Check if any status is unavailable
+                    let isUnavailable = false;
+                    for (let s of status) {
+                        if (unavailable.some(u => s.title.includes(u))) {
+                            this.style.display = 'none';
+                            isUnavailable = true;
+                            break;
+                        }
+                    }
+                    if (isUnavailable) return; // Skip further processing for this user
+
                     let user = this.className;
                     let userID = user.replace("user", "");
                     let userIcons = $(this).find("div.level-icons-wrap > span.user-icons");
@@ -119,12 +134,6 @@ let GM_addStyle = function (s) {
                     iconWrap.style.display = 'inline';
                     let iconTray = this.querySelector('span.icons-wrap > ul#iconTray');
                     iconTray.style.display = 'inline';
-                    let status = this.querySelectorAll('ul#iconTray > li');
-                    for(let s of status){
-                        if (unavailable.some(u=> s.title.includes(u))){
-                            this.style.display = 'none';
-                        }
-                    }
                 });
             }
         });
