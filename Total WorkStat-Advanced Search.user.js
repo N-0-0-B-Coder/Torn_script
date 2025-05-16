@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Total WorkStat-Advanced Search
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @updateURL    https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Total%20WorkStat-Advanced%20Search.user.js
 // @downloadURL  https://github.com/N-0-0-B-Coder/Torn_script/raw/main/Total%20WorkStat-Advanced%20Search.user.js
 // @description  Present workstat value beside player name in advanced search
